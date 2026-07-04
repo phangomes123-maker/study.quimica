@@ -1,0 +1,25 @@
+{
+  "summary": "Iteration 2 smoke tests passed. Backend: /api/topics returns all 10 topics (3 Cinética + 4 Eletroquímica incl. Tabela de Potenciais & Eletrólise + 3 Equilíbrio). Open-answers endpoints (POST insert + upsert, GET list, GET by exercise, GET non-existent) all return expected shapes. Frontend: Topics page renders 10 cards with 3 filter buttons filtering correctly (3 per category). Eletrólise topic page renders Conteúdo tab with expected content. Open answer save flow works end-to-end: fill textarea + click save-open-<id> button → 'Salva' badge appears; after reload the textarea is pre-populated and badge persists. Progress page (/progresso) shows 'Minhas respostas abertas' section with data-testid open-answers-list and one open-answer-<id> entry displaying question + topic label.",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "passed": [
+    "GET /api/topics returns 10 topics with correct slugs & titles (Tabela de Potenciais & Eletrólise present)",
+    "POST /api/open-answers first call -> {saved:true, updated:false}",
+    "POST /api/open-answers repeat -> {saved:true, updated:true} (upsert works)",
+    "GET /api/open-answers/{sid} returns array with question, answer_text, gabarito, topic_id",
+    "GET /api/open-answers/{sid}/exercise/{eid} returns saved entry",
+    "GET /api/open-answers/{sid}/exercise/nonexistent -> {exists:false}",
+    "Topics page /topicos shows 10 topic cards with data-testid topic-card-<slug>",
+    "Filter buttons (Cinética Química / Eletroquímica / Equilíbrio Químico) each yield 3 cards",
+    "Eletrólise topic page renders with 'Conteúdo' tab and expected content ('Ígnea')",
+    "NOX topic Exercícios tab shows open exercise with textarea + save-open-<id> button",
+    "Clicking Salvar resposta triggers save and shows '✓ Salva' badge",
+    "After page reload textarea is pre-populated with saved answer and Salva badge persists",
+    "Progress page shows Minhas respostas abertas section with data-testid open-answers-list and open-answer-<id> entries"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true,
+  "notes": "Session id is not stored in localStorage under 'session_id'/'sessionId' keys — the frontend uses another persistence mechanism (likely in-memory or cookie). Persistence across reload still works as verified. AI summary flow intentionally not retested per request."
+}

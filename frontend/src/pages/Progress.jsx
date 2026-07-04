@@ -1,16 +1,22 @@
 import { useEffect, useState } from "react";
-import { fetchProgress, fetchTopics } from "../lib/api";
+import { fetchProgress, fetchTopics, fetchOpenAnswers } from "../lib/api";
 import { getSessionId } from "../lib/session";
-import { TrendUp, Target, CheckCircle } from "@phosphor-icons/react";
+import { TrendUp, Target, CheckCircle, NotePencil } from "@phosphor-icons/react";
 
 export default function Progress() {
   const [progress, setProgress] = useState(null);
   const [topics, setTopics] = useState([]);
+  const [openAnswers, setOpenAnswers] = useState([]);
 
   useEffect(() => {
-    Promise.all([fetchProgress(getSessionId()), fetchTopics()]).then(([p, t]) => {
+    Promise.all([
+      fetchProgress(getSessionId()),
+      fetchTopics(),
+      fetchOpenAnswers(getSessionId()),
+    ]).then(([p, t, oa]) => {
       setProgress(p);
       setTopics(t);
+      setOpenAnswers(oa);
     });
   }, []);
 
@@ -70,6 +76,55 @@ export default function Progress() {
               })}
             </div>
           )}
+
+          <div className="mt-14">
+            <div className="flex items-center gap-3 mb-4">
+              <NotePencil size={22} weight="duotone" className="text-[#0022FF]" />
+              <h2 className="font-display font-bold text-2xl">Minhas respostas abertas</h2>
+            </div>
+            {openAnswers.length === 0 ? (
+              <div className="border border-dashed border-[#E0E2DB] p-10 text-center">
+                <p className="font-mono text-sm text-[#5C5F66]">
+                  Você ainda não salvou nenhuma resposta aberta. Vá em um tópico → Exercícios → questão aberta e clique em &quot;Salvar resposta&quot;.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-4" data-testid="open-answers-list">
+                {openAnswers.map((oa) => (
+                  <details
+                    key={oa.id}
+                    className="border border-[#E0E2DB] bg-white p-5 group"
+                    data-testid={`open-answer-${oa.exercise_id}`}
+                  >
+                    <summary className="cursor-pointer flex items-baseline justify-between gap-4">
+                      <span className="font-display font-semibold text-sm flex-1">{oa.question}</span>
+                      <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#5C5F66]">
+                        {topicName(oa.topic_id).slice(0, 30)}…
+                      </span>
+                    </summary>
+                    <div className="mt-4 space-y-3">
+                      <div>
+                        <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-1">
+                          Sua resposta
+                        </div>
+                        <div className="text-sm whitespace-pre-wrap bg-[#F4F5F2] p-3 border-l-2 border-[#0F1115]">
+                          {oa.answer_text}
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-1">
+                          Gabarito
+                        </div>
+                        <div className="text-sm bg-[#F4F5F2] p-3 border-l-2 border-[#0022FF]">
+                          {oa.gabarito}
+                        </div>
+                      </div>
+                    </div>
+                  </details>
+                ))}
+              </div>
+            )}
+          </div>
         </>
       )}
     </div>

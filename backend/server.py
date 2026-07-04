@@ -92,6 +92,23 @@ class AnswerRequest(BaseModel):
     answer_text: Optional[str] = None
 
 
+class OpenAnswer(BaseModel):
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    session_id: str
+    exercise_id: str
+    topic_id: str
+    question: str
+    answer_text: str
+    gabarito: str
+    updated_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
+class OpenAnswerRequest(BaseModel):
+    session_id: str
+    exercise_id: str
+    answer_text: str
+
+
 # ============ SEED DATA ============
 SEED_TOPICS = [
     {
@@ -133,6 +150,46 @@ SEED_TOPICS = [
         "order": 5,
         "description": "Funcionamento de pilhas galvânicas, potenciais padrão, ponte salina e força eletromotriz.",
         "icon": "battery-charging",
+    },
+    {
+        "slug": "eletroquimica-tabela-potenciais",
+        "title": "Tabela de Potenciais Padrão de Redução",
+        "module": "Eletroquímica",
+        "order": 6,
+        "description": "Como ler e usar a tabela de potenciais padrão para prever espontaneidade, força de oxidantes/redutores e calcular ΔE°.",
+        "icon": "gauge",
+    },
+    {
+        "slug": "eletroquimica-eletrolise",
+        "title": "Eletrólise Ígnea e Aquosa",
+        "module": "Eletroquímica",
+        "order": 7,
+        "description": "Processos não-espontâneos: eletrólise, prioridade de descarga, leis de Faraday e aplicações industriais.",
+        "icon": "lightning",
+    },
+    {
+        "slug": "equilibrio-introducao",
+        "title": "Introdução ao Equilíbrio Químico",
+        "module": "Equilíbrio Químico",
+        "order": 8,
+        "description": "Reações reversíveis, equilíbrio dinâmico e as características do estado de equilíbrio.",
+        "icon": "atom",
+    },
+    {
+        "slug": "equilibrio-constante",
+        "title": "Constante de Equilíbrio (Kc e Kp)",
+        "module": "Equilíbrio Químico",
+        "order": 9,
+        "description": "Lei da ação das massas, Kc, Kp, relação entre eles e o significado dos valores.",
+        "icon": "chart-line",
+    },
+    {
+        "slug": "equilibrio-calculos-k",
+        "title": "Cálculos de K e Princípio de Le Chatelier",
+        "module": "Equilíbrio Químico",
+        "order": 10,
+        "description": "Como calcular K a partir de concentrações, quociente Q vs K, e o deslocamento de equilíbrio segundo Le Chatelier.",
+        "icon": "flask",
     },
 ]
 
@@ -181,6 +238,52 @@ SEED_CONTENT = {
         {"heading": "Ponte Salina",
          "body": "Contém eletrólito inerte (ex: KNO₃) e serve para manter a neutralidade elétrica das soluções, permitindo o fluxo de íons entre os eletrodos."},
     ],
+    "eletroquimica-tabela-potenciais": [
+        {"heading": "O que é a tabela?",
+         "body": "É a lista de potenciais padrão de **redução** (E°red) de cada semi-reação, medidos em relação ao eletrodo padrão de hidrogênio (E° = 0,00 V), a 25°C, 1 mol/L, 1 atm."},
+        {"heading": "Interpretação",
+         "body": "- Quanto **maior** o E°red → maior tendência de **sofrer redução** → melhor **agente oxidante**.\n- Quanto **menor** (mais negativo) o E°red → maior tendência de **sofrer oxidação** → melhor **agente redutor**.\n\nExemplos:\n- F₂/F⁻ = +2,87 V (melhor oxidante)\n- Li⁺/Li = -3,04 V (melhor redutor)"},
+        {"heading": "Calculando ΔE° da pilha",
+         "body": "ΔE° = E°(cátodo) − E°(ânodo)\n\nO cátodo é a semi-reação de **maior** E°red (sofre redução) e o ânodo é a de **menor** E°red (sofre oxidação, escrita invertida).\n\nSe ΔE° > 0 → espontânea (pilha). Se ΔE° < 0 → não espontânea (precisa de eletrólise)."},
+        {"heading": "Previsão de reações",
+         "body": "Um metal só desloca outro que esteja **acima** dele na fila de reatividade (potencial mais positivo). Ex: Zn desloca Cu²⁺, mas Cu não desloca Zn²⁺."},
+    ],
+    "eletroquimica-eletrolise": [
+        {"heading": "O que é Eletrólise?",
+         "body": "Processo **não-espontâneo** (ΔE° < 0) em que se usa **corrente elétrica externa** para forçar uma reação redox. Inversa da pilha: converte energia elétrica em química."},
+        {"heading": "Ígnea vs Aquosa",
+         "body": "- **Ígnea**: composto fundido, sem água. Só há cátions e ânions do composto. Ex: NaCl fundido → Na (cátodo) + Cl₂ (ânodo).\n- **Aquosa**: composto em solução. Água também pode reagir; obedece à **prioridade de descarga**."},
+        {"heading": "Prioridade de Descarga (aquosa)",
+         "body": "Cátions (descarregam no cátodo):\n1º Metais nobres (Cu, Ag, Au...) e H⁺\n2º H⁺ da água (se cátion for alcalino, alcalino-terroso ou Al³⁺)\n\nÂnions (descarregam no ânodo):\n1º Não-oxigenados (Cl⁻, Br⁻, I⁻) e OH⁻\n2º OH⁻ da água (se ânion for oxigenado como SO₄²⁻, NO₃⁻)"},
+        {"heading": "Leis de Faraday",
+         "body": "1ª lei: **m = (M · i · t) / (n · F)**\n\nOnde m = massa depositada, M = massa molar, i = corrente (A), t = tempo (s), n = nº de elétrons, F = constante de Faraday = 96500 C/mol.\n\n2ª lei: para mesma carga, massas depositadas são proporcionais aos equivalentes-grama."},
+        {"heading": "Aplicações",
+         "body": "- Obtenção de Al metálico (processo Hall-Héroult).\n- Refino eletrolítico de Cu.\n- Galvanoplastia (cromagem, prateação).\n- Produção de Cl₂ e NaOH (eletrólise da salmoura)."},
+    ],
+    "equilibrio-introducao": [
+        {"heading": "Reações Reversíveis",
+         "body": "Muitas reações ocorrem nos **dois sentidos** ao mesmo tempo: produtos podem reagir de volta formando reagentes. Representamos por ⇌.\n\nEx: N₂ + 3H₂ ⇌ 2NH₃"},
+        {"heading": "Equilíbrio Dinâmico",
+         "body": "O equilíbrio é atingido quando a **velocidade da reação direta = velocidade da reação inversa**. As concentrações **param de mudar**, mas ambas as reações continuam ocorrendo (dinâmico, não estático)."},
+        {"heading": "Características do Equilíbrio",
+         "body": "- Sistema **fechado** (sem troca de matéria com o meio).\n- Concentrações constantes (não iguais, apenas constantes).\n- Ocorre em **qualquer temperatura** (mas o valor de K depende dela).\n- É atingido por ambos os lados (partindo de reagentes ou de produtos)."},
+    ],
+    "equilibrio-constante": [
+        {"heading": "Lei da Ação das Massas",
+         "body": "Para uma reação genérica: aA + bB ⇌ cC + dD\n\nA constante de equilíbrio é:\n\n**Kc = ([C]^c · [D]^d) / ([A]^a · [B]^b)**\n\nSempre **produtos sobre reagentes**, elevados aos coeficientes estequiométricos. Sólidos e líquidos puros **não entram** na expressão."},
+        {"heading": "Kp para Gases",
+         "body": "Quando os participantes são gasosos, usa-se pressão parcial:\n\n**Kp = (P_C^c · P_D^d) / (P_A^a · P_B^b)**\n\nRelação com Kc:\n\n**Kp = Kc · (RT)^Δn**\n\nOnde Δn = (mols de gás produtos) − (mols de gás reagentes)."},
+        {"heading": "Interpretando o Valor de K",
+         "body": "- **K >> 1**: equilíbrio deslocado para produtos (reação favorece produtos).\n- **K << 1**: equilíbrio deslocado para reagentes.\n- **K ≈ 1**: quantidades comparáveis de reagentes e produtos.\n\nK depende **apenas da temperatura**; não muda com concentração, pressão ou catalisador."},
+    ],
+    "equilibrio-calculos-k": [
+        {"heading": "Calculando K",
+         "body": "Passos:\n1. Escreva a expressão de K.\n2. Monte a **tabela ICE** (Início, Change/Variação, Equilíbrio) com concentrações.\n3. Substitua os valores no equilíbrio.\n\nEx: H₂ + I₂ ⇌ 2HI, com [H₂]eq = 0,2, [I₂]eq = 0,2 e [HI]eq = 1,6 → Kc = (1,6)²/(0,2·0,2) = 64."},
+        {"heading": "Quociente Q vs K",
+         "body": "Q é calculado com concentrações **fora do equilíbrio** (mesmo formato de K).\n\n- **Q < K**: reação avança para direita (produtos).\n- **Q > K**: reação retrocede (reagentes).\n- **Q = K**: sistema em equilíbrio."},
+        {"heading": "Princípio de Le Chatelier",
+         "body": "Se um sistema em equilíbrio sofrer perturbação, ele se desloca no sentido que **minimize** essa perturbação.\n\n- **↑ Concentração** de A → equilíbrio se desloca para consumi-la (direita).\n- **↑ Pressão** → desloca para o lado com **menos** mols de gás.\n- **↑ Temperatura** (endotérmica) → desloca para direita; se exotérmica, para esquerda.\n- **Catalisador** não desloca o equilíbrio, só acelera para atingi-lo."},
+    ],
 }
 
 SEED_VIDEOS = {
@@ -200,6 +303,23 @@ SEED_VIDEOS = {
     ],
     "eletroquimica-celulas-voltaicas": [
         {"title": "Pilhas Galvânicas - Funcionamento", "youtube_id": "8vG7XZKZ9G0", "channel": "Professor Boaro", "duration": "16:40"},
+    ],
+    "eletroquimica-tabela-potenciais": [
+        {"title": "Tabela de Potenciais - Como usar", "youtube_id": "cnH6oVR1uzc", "channel": "Química em Ação", "duration": "10:15"},
+    ],
+    "eletroquimica-eletrolise": [
+        {"title": "Eletrólise Ígnea e Aquosa", "youtube_id": "9c-cRZM4l60", "channel": "Professor Boaro", "duration": "18:22"},
+        {"title": "Leis de Faraday na Eletrólise", "youtube_id": "OqZ7RM8QaHY", "channel": "Química em Ação", "duration": "12:08"},
+    ],
+    "equilibrio-introducao": [
+        {"title": "Equilíbrio Químico - Introdução", "youtube_id": "M2SO1UEjnBQ", "channel": "Professor Boaro", "duration": "13:50"},
+    ],
+    "equilibrio-constante": [
+        {"title": "Kc e Kp - Constantes de Equilíbrio", "youtube_id": "8f9EExkX8f0", "channel": "Química em Ação", "duration": "15:40"},
+    ],
+    "equilibrio-calculos-k": [
+        {"title": "Cálculos de K - Tabela ICE", "youtube_id": "R6L6yWr7v5U", "channel": "Professor Boaro", "duration": "17:20"},
+        {"title": "Princípio de Le Chatelier", "youtube_id": "4qz7VOKrDdo", "channel": "Química em Ação", "duration": "11:35"},
     ],
 }
 
@@ -284,6 +404,96 @@ SEED_EXERCISES = {
          "explanation": "Zn passa de 0 para +2 (oxida) → agente redutor. Cu²⁺ passa de +2 para 0 (reduz) → agente oxidante.",
          "difficulty": "médio"},
     ],
+    "eletroquimica-tabela-potenciais": [
+        {"question": "Na tabela de potenciais padrão de redução, quanto maior o valor de E°red, maior é a tendência da espécie de:",
+         "type": "mcq",
+         "options": ["Sofrer oxidação", "Sofrer redução", "Perder elétrons", "Reagir com água"],
+         "correct_index": 1,
+         "explanation": "Maior E°red → maior tendência de ganhar elétrons (reduzir) → melhor agente oxidante.",
+         "difficulty": "fácil"},
+        {"question": "Dados: E°(Ag⁺/Ag) = +0,80 V; E°(Fe²⁺/Fe) = -0,44 V. Qual o ΔE° da pilha Fe|Ag?",
+         "type": "mcq",
+         "options": ["+0,36 V", "+1,24 V", "-1,24 V", "+0,44 V"],
+         "correct_index": 1,
+         "explanation": "ΔE° = E°(cátodo) − E°(ânodo) = 0,80 − (−0,44) = 1,24 V. Ag é cátodo (maior E°).",
+         "difficulty": "médio"},
+        {"question": "Explique por que o metal Zinco desloca íons Cu²⁺ de uma solução, mas Cobre não desloca íons Zn²⁺.",
+         "type": "open", "options": [], "correct_index": None,
+         "explanation": "Zn tem E°red mais negativo (-0,76 V) que Cu²⁺/Cu (+0,34 V), portanto o Zn tende a oxidar (perder e⁻) e reduzir o Cu²⁺. O contrário não ocorre porque Cu tem menor tendência à oxidação que Zn.",
+         "difficulty": "médio"},
+    ],
+    "eletroquimica-eletrolise": [
+        {"question": "Na eletrólise, a diferença fundamental em relação à pilha é que:",
+         "type": "mcq",
+         "options": ["Não envolve reação redox", "Usa energia elétrica externa para forçar uma reação não-espontânea", "Sempre produz gás no cátodo", "Ocorre só com sais fundidos"],
+         "correct_index": 1,
+         "explanation": "Eletrólise é o inverso da pilha: energia elétrica → química, forçando reação não-espontânea (ΔE° < 0).",
+         "difficulty": "fácil"},
+        {"question": "Na eletrólise aquosa de NaCl, qual espécie é descarregada no cátodo?",
+         "type": "mcq",
+         "options": ["Na⁺ formando Na metálico", "H₂O (formando H₂ e OH⁻)", "Cl⁻ formando Cl₂", "OH⁻"],
+         "correct_index": 1,
+         "explanation": "Na⁺ é alcalino (baixa prioridade), então descarrega H₂O da água, formando gás H₂ e íons OH⁻.",
+         "difficulty": "médio"},
+        {"question": "Uma corrente de 9,65 A é passada por 1000 s através de uma solução de CuSO₄. Qual a massa aproximada de Cu depositada? (M_Cu = 63,5; F = 96500 C/mol; n = 2)",
+         "type": "mcq",
+         "options": ["1,58 g", "3,17 g", "6,35 g", "12,7 g"],
+         "correct_index": 1,
+         "explanation": "m = (M·i·t)/(n·F) = (63,5·9,65·1000)/(2·96500) ≈ 3,17 g.",
+         "difficulty": "difícil"},
+    ],
+    "equilibrio-introducao": [
+        {"question": "O equilíbrio químico é chamado de dinâmico porque:",
+         "type": "mcq",
+         "options": ["As concentrações mudam constantemente", "As reações direta e inversa continuam ocorrendo com a mesma velocidade", "A temperatura oscila", "Os produtos são convertidos em reagentes de forma unilateral"],
+         "correct_index": 1,
+         "explanation": "No equilíbrio, v_direta = v_inversa. As reações continuam, apenas as concentrações ficam constantes.",
+         "difficulty": "fácil"},
+        {"question": "Qual condição é necessária para atingir o equilíbrio?",
+         "type": "mcq",
+         "options": ["Sistema aberto", "Sistema fechado", "Ausência de catalisador", "Temperatura baixa"],
+         "correct_index": 1,
+         "explanation": "Sistema fechado impede a saída/entrada de matéria, permitindo que as duas reações se igualem.",
+         "difficulty": "fácil"},
+    ],
+    "equilibrio-constante": [
+        {"question": "Para a reação 2SO₂(g) + O₂(g) ⇌ 2SO₃(g), a expressão de Kc é:",
+         "type": "mcq",
+         "options": ["[SO₃]/([SO₂][O₂])", "[SO₃]²/([SO₂]²[O₂])", "([SO₂]²[O₂])/[SO₃]²", "[SO₂][O₂]/[SO₃]"],
+         "correct_index": 1,
+         "explanation": "Kc = [produtos]/[reagentes], cada um elevado ao seu coeficiente: [SO₃]²/([SO₂]²·[O₂]).",
+         "difficulty": "fácil"},
+        {"question": "Se Kc de uma reação é 1,0 × 10⁻⁸, podemos afirmar que:",
+         "type": "mcq",
+         "options": ["A reação é rápida", "Predominam produtos no equilíbrio", "Predominam reagentes no equilíbrio", "A reação está fora do equilíbrio"],
+         "correct_index": 2,
+         "explanation": "K << 1 significa que no equilíbrio há muito mais reagentes que produtos.",
+         "difficulty": "fácil"},
+        {"question": "Explique por que o valor de Kc não depende das concentrações iniciais dos reagentes, mas apenas da temperatura.",
+         "type": "open", "options": [], "correct_index": None,
+         "explanation": "K é definido pela razão de constantes de velocidade (k_direta/k_inversa). As constantes de velocidade só dependem da T (equação de Arrhenius), logo K só varia com a temperatura.",
+         "difficulty": "médio"},
+    ],
+    "equilibrio-calculos-k": [
+        {"question": "Para H₂ + I₂ ⇌ 2HI, no equilíbrio [H₂] = 0,1 mol/L, [I₂] = 0,1 mol/L e [HI] = 0,8 mol/L. Qual o valor de Kc?",
+         "type": "mcq",
+         "options": ["8", "16", "32", "64"],
+         "correct_index": 3,
+         "explanation": "Kc = [HI]²/([H₂][I₂]) = 0,64/(0,01) = 64.",
+         "difficulty": "médio"},
+        {"question": "Em uma reação exotérmica em equilíbrio, o que acontece se aumentarmos a temperatura?",
+         "type": "mcq",
+         "options": ["Equilíbrio se desloca para produtos", "Equilíbrio se desloca para reagentes", "K aumenta", "Nada muda"],
+         "correct_index": 1,
+         "explanation": "Aumentar T em reação exotérmica desloca para o lado endotérmico (reagentes) para absorver o calor extra.",
+         "difficulty": "médio"},
+        {"question": "Para N₂ + 3H₂ ⇌ 2NH₃, se calcularmos Q e obtermos Q > K, o que ocorre?",
+         "type": "mcq",
+         "options": ["Sistema já em equilíbrio", "Reação avança formando mais NH₃", "Reação recua formando mais N₂ e H₂", "Impossível calcular"],
+         "correct_index": 2,
+         "explanation": "Q > K → excesso de produtos → sistema se ajusta consumindo produtos e formando reagentes.",
+         "difficulty": "difícil"},
+    ],
     "eletroquimica-celulas-voltaicas": [
         {"question": "Em uma pilha galvânica, no ânodo ocorre:",
          "type": "mcq",
@@ -308,38 +518,36 @@ SEED_EXERCISES = {
 
 
 async def seed_database():
-    """Seed the database if empty."""
-    existing = await db.topics.count_documents({})
-    if existing > 0:
-        return
-
-    logger.info("Seeding database with chemistry topics...")
+    """Seed the database idempotently by slug. Adds new topics without touching existing ones."""
     topic_id_by_slug = {}
+    existing = await db.topics.find({}, {"_id": 0}).to_list(500)
+    for d in existing:
+        topic_id_by_slug[d["slug"]] = d["id"]
 
+    added = 0
     for t in SEED_TOPICS:
+        if t["slug"] in topic_id_by_slug:
+            continue
         topic = Topic(**t)
         await db.topics.insert_one(topic.model_dump())
         topic_id_by_slug[t["slug"]] = topic.id
+        added += 1
 
-    for slug, contents in SEED_CONTENT.items():
-        tid = topic_id_by_slug[slug]
-        for i, c in enumerate(contents):
-            content = Content(topic_id=tid, order=i, **c)
+        # seed children for this new topic
+        for i, c in enumerate(SEED_CONTENT.get(t["slug"], [])):
+            content = Content(topic_id=topic.id, order=i, **c)
             await db.contents.insert_one(content.model_dump())
 
-    for slug, videos in SEED_VIDEOS.items():
-        tid = topic_id_by_slug[slug]
-        for i, v in enumerate(videos):
-            video = Video(topic_id=tid, order=i, **v)
+        for i, v in enumerate(SEED_VIDEOS.get(t["slug"], [])):
+            video = Video(topic_id=topic.id, order=i, **v)
             await db.videos.insert_one(video.model_dump())
 
-    for slug, exs in SEED_EXERCISES.items():
-        tid = topic_id_by_slug[slug]
-        for e in exs:
-            ex = Exercise(topic_id=tid, **e)
+        for e in SEED_EXERCISES.get(t["slug"], []):
+            ex = Exercise(topic_id=topic.id, **e)
             await db.exercises.insert_one(ex.model_dump())
 
-    logger.info("Database seeded successfully.")
+    if added:
+        logger.info(f"Seeded {added} new topics.")
 
 
 # ============ ROUTES ============
@@ -484,6 +692,51 @@ async def get_progress(session_id: str):
         "accuracy": (correct / total * 100) if total else 0,
         "per_topic": per_topic,
     }
+
+
+@api_router.post("/open-answers")
+async def save_open_answer(req: OpenAnswerRequest):
+    ex_doc = await db.exercises.find_one({"id": req.exercise_id}, {"_id": 0})
+    if not ex_doc:
+        raise HTTPException(404, "Exercise not found")
+    ex = Exercise(**ex_doc)
+
+    now = datetime.now(timezone.utc).isoformat()
+    existing = await db.open_answers.find_one(
+        {"session_id": req.session_id, "exercise_id": req.exercise_id}, {"_id": 0}
+    )
+    if existing:
+        await db.open_answers.update_one(
+            {"session_id": req.session_id, "exercise_id": req.exercise_id},
+            {"$set": {"answer_text": req.answer_text, "updated_at": now}},
+        )
+        return {"saved": True, "updated": True}
+
+    entry = OpenAnswer(
+        session_id=req.session_id,
+        exercise_id=req.exercise_id,
+        topic_id=ex.topic_id,
+        question=ex.question,
+        answer_text=req.answer_text,
+        gabarito=ex.explanation,
+    )
+    await db.open_answers.insert_one(entry.model_dump())
+    return {"saved": True, "updated": False}
+
+
+@api_router.get("/open-answers/{session_id}")
+async def list_open_answers(session_id: str):
+    docs = await db.open_answers.find({"session_id": session_id}, {"_id": 0}).to_list(500)
+    docs.sort(key=lambda d: d.get("updated_at", ""), reverse=True)
+    return docs
+
+
+@api_router.get("/open-answers/{session_id}/exercise/{exercise_id}")
+async def get_open_answer(session_id: str, exercise_id: str):
+    doc = await db.open_answers.find_one(
+        {"session_id": session_id, "exercise_id": exercise_id}, {"_id": 0}
+    )
+    return doc or {"exists": False}
 
 
 @api_router.get("/revision/questions")

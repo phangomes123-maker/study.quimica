@@ -10,6 +10,8 @@ import {
   fetchSummary,
   generateSummary,
   submitAnswer,
+  saveOpenAnswer,
+  fetchOpenAnswer,
 } from "../lib/api";
 import { getSessionId } from "../lib/session";
 
@@ -142,7 +144,7 @@ function ContentView({ content }) {
       <aside className="lg:col-span-4">
         <div className="sticky top-24 border border-[#0F1115] p-6 bg-[#F4F5F2]">
           <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-4">
-            >> Sumário
+            {">>"} Sumário
           </div>
           <ol className="space-y-2">
             {content.map((c, i) => (
@@ -180,7 +182,7 @@ function SummaryView({ summary, onGenerate, loading }) {
       ) : (
         <div className="border-l-4 border-[#0022FF] bg-[#F4F5F2] p-8" data-testid="summary-content">
           <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-4 flex items-center justify-between">
-            <span>>> Resumo gerado por IA</span>
+            <span>{">>"} Resumo gerado por IA</span>
             <button onClick={onGenerate} disabled={loading} className="hover:text-[#0022FF] disabled:opacity-50" data-testid="regenerate-summary-btn">
               {loading ? "gerando..." : "regenerar ↻"}
             </button>
@@ -313,27 +315,68 @@ function MCQCard({ exercise, index }) {
 function OpenCard({ exercise, index }) {
   const [answer, setAnswer] = useState("");
   const [showAnswer, setShowAnswer] = useState(false);
+  const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    fetchOpenAnswer(getSessionId(), exercise.id).then((d) => {
+      if (d && d.answer_text) {
+        setAnswer(d.answer_text);
+        setSaved(true);
+      }
+    }).catch(() => {});
+  }, [exercise.id]);
+
+  const handleSave = async () => {
+    if (!answer.trim()) return;
+    setSaving(true);
+    try {
+      await saveOpenAnswer({
+        session_id: getSessionId(),
+        exercise_id: exercise.id,
+        answer_text: answer,
+      });
+      setSaved(true);
+      toast.success("Resposta salva");
+    } catch {
+      toast.error("Erro ao salvar");
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <div className="border border-[#0F1115] p-6" data-testid={`open-${exercise.id}`}>
-      <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-3">
-        Q{String(index + 1).padStart(2, "0")} · Aberta · {exercise.difficulty}
+      <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-3 flex items-center justify-between">
+        <span>Q{String(index + 1).padStart(2, "0")} · Aberta · {exercise.difficulty}</span>
+        {saved && <span className="text-[#00D65B]">✓ Salva</span>}
       </div>
       <p className="text-[17px] font-medium mb-4 leading-relaxed">{exercise.question}</p>
       <textarea
         rows={4}
         value={answer}
-        onChange={(e) => setAnswer(e.target.value)}
+        onChange={(e) => { setAnswer(e.target.value); setSaved(false); }}
         placeholder="Escreva sua resposta aqui..."
         data-testid={`open-textarea-${exercise.id}`}
         className="w-full border-b-2 border-[#E0E2DB] focus:border-[#0022FF] outline-none py-2 bg-transparent resize-none text-sm"
       />
-      <button
-        onClick={() => setShowAnswer((v) => !v)}
-        data-testid={`toggle-answer-${exercise.id}`}
-        className="mt-4 font-mono text-xs uppercase tracking-[0.2em] border border-[#0F1115] px-4 py-2 hover:bg-[#0F1115] hover:text-white transition-colors"
-      >
-        {showAnswer ? "Ocultar gabarito" : "Ver gabarito"}
-      </button>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <button
+          onClick={handleSave}
+          disabled={saving || !answer.trim()}
+          data-testid={`save-open-${exercise.id}`}
+          className="font-mono text-xs uppercase tracking-[0.2em] bg-[#0022FF] text-white px-4 py-2 hover:bg-[#0019C0] disabled:opacity-40 transition-colors"
+        >
+          {saving ? "Salvando..." : saved ? "Salvar novamente" : "Salvar resposta"}
+        </button>
+        <button
+          onClick={() => setShowAnswer((v) => !v)}
+          data-testid={`toggle-answer-${exercise.id}`}
+          className="font-mono text-xs uppercase tracking-[0.2em] border border-[#0F1115] px-4 py-2 hover:bg-[#0F1115] hover:text-white transition-colors"
+        >
+          {showAnswer ? "Ocultar gabarito" : "Ver gabarito"}
+        </button>
+      </div>
       {showAnswer && (
         <div className="mt-4 border-l-4 border-[#0022FF] pl-4 py-2 bg-[#F4F5F2]" data-testid={`open-explanation-${exercise.id}`}>
           <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-1">

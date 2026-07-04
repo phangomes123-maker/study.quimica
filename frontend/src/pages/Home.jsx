@@ -59,7 +59,7 @@ export default function Home() {
 
             <div className="lg:col-span-4 border border-[#0F1115] bg-white p-6">
               <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-4">
-                >> Diagnóstico rápido
+                {">>"} Diagnóstico rápido
               </div>
               <div className="space-y-4">
                 <Stat label="Módulos" value={modules.length || 2} />

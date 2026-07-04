@@ -19,3 +19,7 @@ export const submitAnswer = (payload) => api.post(`/exercises/answer`, payload).
 export const fetchProgress = (sid) => api.get(`/progress/${sid}`).then((r) => r.data);
 export const fetchRevision = (sid, limit = 10) =>
   api.get(`/revision/questions`, { params: { session_id: sid, limit } }).then((r) => r.data);
+export const saveOpenAnswer = (payload) => api.post(`/open-answers`, payload).then((r) => r.data);
+export const fetchOpenAnswers = (sid) => api.get(`/open-answers/${sid}`).then((r) => r.data);
+export const fetchOpenAnswer = (sid, exId) =>
+  api.get(`/open-answers/${sid}/exercise/${exId}`).then((r) => r.data);

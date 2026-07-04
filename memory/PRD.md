@@ -27,6 +27,18 @@ Uploaded artifacts: 3 PDFs on Cinética Química + 2 PDFs on Eletroquímica.
 - Progress dashboard (`/progresso`) with total/correct/accuracy + per-topic bars.
 - AI summary generation via Claude Sonnet 4.5 with markdown-lite renderer.
 
+## Implemented (Iteration 2 - 2026-02-04)
+- Expanded content: **5 new topics** → total 10 topics.
+  - Eletroquímica: Tabela de Potenciais Padrão + Eletrólise Ígnea/Aquosa (com Leis de Faraday).
+  - Equilíbrio Químico: Introdução, Constante Kc/Kp, Cálculos de K + Le Chatelier.
+- Seed idempotente por slug (preserva progresso e respostas existentes).
+- **Persistência de respostas abertas**:
+  - `POST /api/open-answers` (upsert por session+exercise).
+  - `GET /api/open-answers/{session_id}` para listar.
+  - `GET /api/open-answers/{session_id}/exercise/{exercise_id}` para pré-carregar.
+- OpenCard agora carrega resposta salva ao abrir e mostra badge "✓ Salva".
+- Página `/progresso` traz nova seção "Minhas respostas abertas" com question + sua resposta + gabarito colapsável.
+
 ## User Personas
 - Estudante de ensino médio ou pré-vestibular brasileiro estudando química (foco em vestibulares como ENEM, FUVEST).
 

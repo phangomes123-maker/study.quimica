@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estúdio.Química — Plataforma de Estudos</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0F1115;--soft:#5C5F66;--line:#E0E2DB;--bg:#F4F5F2;--blue:#0022FF;--yellow:#FFD500;--green:#00D65B;--red:#FF3300;}
+  html,body{background:#fff;color:var(--ink);font-family:'IBM Plex Sans',sans-serif;margin:0;}
+  .font-heading{font-family:'Fraunces',serif;font-weight:900;letter-spacing:-.02em;}
+  .font-display{font-family:'Space Grotesk',sans-serif;}
+  .font-mono{font-family:'IBM Plex Mono',monospace;}
+  ::selection{background:var(--yellow);}
+  .hard-shadow:hover{transform:translate(-3px,-3px);box-shadow:6px 6px 0 var(--ink);transition:.2s;}
+  .grid-bg{background-image:linear-gradient(rgba(15,17,21,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(15,17,21,.04) 1px,transparent 1px);background-size:40px 40px;}
+  .prose h2{font-family:'Space Grotesk';font-weight:700;font-size:1.4rem;margin:1em 0 .4em}
+  .prose p{margin-bottom:.7em;line-height:1.6;white-space:pre-wrap}
+  .prose strong{background:linear-gradient(transparent 65%,#ffd50055 65%);padding:0 2px}
+</style>
+</head>
+<body>
+<header class="border-b border-[color:var(--line)] bg-white sticky top-0 z-40">
+  <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+    <a href="#/" class="flex items-center gap-3">
+      <div class="w-8 h-8 bg-[color:var(--ink)] text-[color:var(--yellow)] flex items-center justify-center font-heading text-lg">Q</div>
+      <div class="leading-none">
+        <div class="font-display font-bold text-base">Estúdio<span class="text-[color:var(--blue)]">.</span>Química</div>
+        <div class="font-mono text-[9px] uppercase tracking-[0.2em] text-[color:var(--soft)]">versão offline</div>
+      </div>
+    </a>
+    <nav class="hidden md:flex gap-1" id="nav"></nav>
+  </div>
+</header>
+<main id="app" class="max-w-7xl mx-auto px-6 py-10 min-h-screen"></main>
+<footer class="border-t border-[color:var(--line)] mt-20 py-6 text-center font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--soft)]">
+  Estúdio.Química · Versão HTML offline · Progresso salvo no seu navegador
+</footer>
+
+<script>
+const DATA = {"topics": [{"id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "slug": "cinetica-velocidade-media", "title": "Velocidade Média, Teoria das Colisões e Lei da Velocidade", "module": "Cinética Química", "description": "Introdução à cinética química: como medimos a velocidade das reações, a teoria das colisões e os fatores que afetam a velocidade.", "content": [{"id": "29a08f0e-3eee-4a36-979c-49b85c62af16", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "heading": "O que é Cinética Química?", "body": "A cinética química é o ramo da química que estuda a velocidade das reações e os fatores que a influenciam. Diferente da termodinâmica, que diz se uma reação é possível, a cinética diz **com que rapidez** ela acontece.", "order": 0}, {"id": "35db2f2b-d8ad-4026-9037-14f12d0a8051", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "heading": "Velocidade Média de Reação", "body": "A velocidade média é definida pela variação da concentração de reagentes ou produtos em um intervalo de tempo:\n\nv = |Δ[X]| / Δt\n\nOnde Δ[X] é a variação de concentração (mol/L) e Δt é o intervalo de tempo (s). Para reagentes usamos o módulo pois a concentração diminui.", "order": 1}, {"id": "759c8ca6-5ff0-42d5-8710-64957a0b87b5", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "heading": "Teoria das Colisões", "body": "Para que uma reação ocorra, é necessário que:\n\n1. As partículas colidam entre si.\n2. A colisão tenha energia igual ou superior à energia de ativação (Ea).\n3. A colisão ocorra em uma **orientação favorável**.\n\nColisões que atendem essas condições são chamadas de **colisões efetivas**.", "order": 2}, {"id": "4f2aa124-f110-4ee0-b429-6c555defca25", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "heading": "Fatores que Afetam a Velocidade", "body": "- **Concentração**: maior concentração → mais colisões → maior velocidade.\n- **Temperatura**: aumenta a energia cinética das partículas.\n- **Superfície de contato**: quanto maior, mais colisões.\n- **Catalisador**: diminui a energia de ativação, acelerando a reação.\n- **Pressão** (gases): maior pressão → maior concentração.", "order": 3}], "videos": [{"id": "1b258ded-3b8a-4973-a482-7b220689731d", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "title": "Cinética Química - Introdução e Velocidade Média", "youtube_id": "n8xLVXn2FCQ", "channel": "Professor Boaro", "duration": "12:34", "order": 0}, {"id": "698744fb-ec28-4acd-9393-53e2c6aa7f8c", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "title": "Teoria das Colisões", "youtube_id": "5Gk9lrxbAKY", "channel": "Química em Ação", "duration": "08:20", "order": 1}], "exercises": [{"id": "0775ea57-c0b6-4db2-80e0-d764bf4781c4", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "question": "Em uma reação, a concentração de um reagente cai de 0,80 mol/L para 0,20 mol/L em 30 segundos. Qual a velocidade média de consumo desse reagente?", "type": "mcq", "options": ["0,010 mol/L·s", "0,020 mol/L·s", "0,030 mol/L·s", "0,060 mol/L·s"], "correct_index": 1, "explanation": "v = |Δ[X]|/Δt = |0,20 − 0,80|/30 = 0,60/30 = 0,020 mol/L·s.", "difficulty": "fácil"}, {"id": "5eba4887-09c0-42db-b5dd-c1555417c589", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "question": "Segundo a teoria das colisões, para uma reação ocorrer é NECESSÁRIO que a colisão:", "type": "mcq", "options": ["Seja apenas frequente", "Tenha energia mínima e orientação adequada", "Ocorra apenas em altas pressões", "Envolva sempre catalisador"], "correct_index": 1, "explanation": "Colisões efetivas exigem energia ≥ Ea e orientação favorável.", "difficulty": "fácil"}, {"id": "4ade693a-2902-4236-a1cd-1b84612dd42e", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "question": "Qual dos fatores NÃO afeta a velocidade de uma reação química?", "type": "mcq", "options": ["Temperatura", "Concentração dos reagentes", "Presença de catalisador", "Cor do recipiente"], "correct_index": 3, "explanation": "A cor do recipiente é irrelevante para a cinética da reação.", "difficulty": "fácil"}, {"id": "80884739-0749-4dc1-ada3-39ede347ae41", "topic_id": "300d4f57-f85e-4ac5-a903-d6c970054d6d", "question": "Explique com suas palavras por que aumentar a superfície de contato de um reagente sólido aumenta a velocidade da reação.", "type": "open", "options": [], "correct_index": null, "explanation": "Ao aumentar a superfície, mais partículas ficam disponíveis para colidir com o outro reagente, aumentando o número de colisões efetivas por segundo.", "difficulty": "médio"}]}, {"id": "a74f31bf-39e2-4594-a408-bec05ca8eb27", "slug": "cinetica-leis-velocidade", "title": "Leis de Velocidade", "module": "Cinética Química", "description": "Ordem de reação, constante de velocidade e determinação experimental das leis cinéticas.", "content": [{"id": "b4a0aad0-f574-4539-9df6-e9b84ec0d63a", "topic_id": "a74f31bf-39e2-4594-a408-bec05ca8eb27", "heading": "Lei da Velocidade", "body": "A lei da velocidade relaciona a velocidade de uma reação com a concentração dos reagentes:\n\nv = k · [A]^m · [B]^n\n\nOnde k é a constante de velocidade, e m, n são as ordens de reação em relação a A e B. A soma m + n é a **ordem global**.", "order": 0}, {"id": "95b12e4b-0bc3-46d6-ba28-54b14a25437c", "topic_id": "a74f31bf-39e2-4594-a408-bec05ca8eb27", "heading": "Ordem de Reação", "body": "A ordem NÃO é determinada pelos coeficientes estequiométricos, mas sim **experimentalmente**. Pode ser 0, 1, 2 ou até fracionária.", "order": 1}, {"id": "183d6735-4f70-4e2a-95b3-1ddf1afa0652", "topic_id": "a74f31bf-39e2-4594-a408-bec05ca8eb27", "heading": "Determinação Experimental", "body": "Pelo método das velocidades iniciais: variam-se as concentrações dos reagentes e observa-se como a velocidade muda. Se dobrar [A] dobra v → ordem 1 em A. Se dobrar [A] quadruplica v → ordem 2 em A.", "order": 2}], "videos": [{"id": "83add860-e29c-4e8f-bb75-0c8ff3b5e147", "topic_id": "a74f31bf-39e2-4594-a408-bec05ca8eb27", "title": "Lei de Velocidade e Ordem de Reação", "youtube_id": "wYqQxTZg8fw", "channel": "Professor Boaro", "duration": "15:10", "order": 0}], "exercises": [{"id": "a2f622db-872c-4f8b-95ec-e00fb70c8bc5", "topic_id": "a74f31bf-39e2-4594-a408-bec05ca8eb27", "question": "Para a reação A + B → C, dobrar [A] mantendo [B] constante quadruplica a velocidade. Qual a ordem em relação a A?", "type": "mcq", "options": ["0", "1", "2", "3"], "correct_index": 2, "explanation": "Se dobrar [A] (fator 2) faz v aumentar 4 vezes (2²), a ordem é 2.", "difficulty": "médio"}, {"id": "2255c3e5-47b2-425a-a61b-d6fa13b8935f", "topic_id": "a74f31bf-39e2-4594-a408-bec05ca8eb27", "question": "A lei da velocidade v = k[A][B]² tem ordem global igual a:", "type": "mcq", "options": ["1", "2", "3", "4"], "correct_index": 2, "explanation": "Ordem global = 1 + 2 = 3.", "difficulty": "fácil"}, {"id": "c38a3209-84a0-4380-a88e-f28421297f12", "topic_id": "a74f31bf-39e2-4594-a408-bec05ca8eb27", "question": "A ordem de reação é sempre determinada pelos coeficientes estequiométricos da equação balanceada. Verdadeiro ou falso? Justifique.", "type": "open", "options": [], "correct_index": null, "explanation": "Falso. A ordem é determinada experimentalmente, e pode não coincidir com os coeficientes.", "difficulty": "médio"}]}, {"id": "21e7257f-f1ab-4c22-8a80-7f334a7fe4f9", "slug": "cinetica-mecanismo-arrhenius", "title": "Mecanismo, Etapas Elementares e Equação de Arrhenius", "module": "Cinética Química", "description": "Etapas elementares, molecularidade, energia de ativação e a equação de Arrhenius.", "content": [{"id": "7f8c0e98-001d-4dac-815a-c5c1befcf971", "topic_id": "21e7257f-f1ab-4c22-8a80-7f334a7fe4f9", "heading": "Etapas Elementares", "body": "A maioria das reações ocorre em várias etapas chamadas **etapas elementares**. A etapa mais lenta é a **etapa determinante da velocidade**.", "order": 0}, {"id": "e5965dff-4710-44bf-9579-817c9a657e94", "topic_id": "21e7257f-f1ab-4c22-8a80-7f334a7fe4f9", "heading": "Molecularidade", "body": "Número de espécies que colidem em uma etapa elementar: unimolecular (1), bimolecular (2), termolecular (3, rara).", "order": 1}, {"id": "4cd1d5c6-0245-4579-b572-33ff6427ea2b", "topic_id": "21e7257f-f1ab-4c22-8a80-7f334a7fe4f9", "heading": "Equação de Arrhenius", "body": "Relaciona a constante de velocidade com a temperatura:\n\nk = A · e^(-Ea/RT)\n\nOnde A é o fator de frequência, Ea é a energia de ativação, R é a constante dos gases e T a temperatura em Kelvin. Aumentar T aumenta k exponencialmente.", "order": 2}], "videos": [{"id": "36fd3326-c862-4e24-9ea4-be4592831098", "topic_id": "21e7257f-f1ab-4c22-8a80-7f334a7fe4f9", "title": "Equação de Arrhenius Explicada", "youtube_id": "kZQYQxaupHk", "channel": "Química em Ação", "duration": "11:45", "order": 0}], "exercises": [{"id": "28b848f7-922d-4e38-ac69-d55eaa505b9d", "topic_id": "21e7257f-f1ab-4c22-8a80-7f334a7fe4f9", "question": "Segundo a equação de Arrhenius, quando a temperatura aumenta, a constante de velocidade k:", "type": "mcq", "options": ["Diminui linearmente", "Aumenta exponencialmente", "Permanece constante", "Diminui exponencialmente"], "correct_index": 1, "explanation": "k = A·e^(-Ea/RT). Como Ea/RT diminui com T maior, o expoente fica menos negativo e k cresce exponencialmente.", "difficulty": "médio"}, {"id": "0f61f20e-98fa-4f00-815e-ed026af70ed8", "topic_id": "21e7257f-f1ab-4c22-8a80-7f334a7fe4f9", "question": "Em um mecanismo com múltiplas etapas, qual determina a velocidade global da reação?", "type": "mcq", "options": ["A etapa mais rápida", "A etapa mais lenta", "A média das etapas", "A última etapa"], "correct_index": 1, "explanation": "A etapa lenta é chamada etapa determinante da velocidade.", "difficulty": "fácil"}]}, {"id": "dc5fa425-8308-4daf-995b-37ccbf204bf3", "slug": "eletroquimica-nox-redox", "title": "NOX, Agentes Redutores e Oxidantes", "module": "Eletroquímica", "description": "Número de oxidação, balanceamento de reações redox e identificação de agentes redutores e oxidantes.", "content": [{"id": "ba318b3d-27a0-4f63-90b8-13c672c76844", "topic_id": "dc5fa425-8308-4daf-995b-37ccbf204bf3", "heading": "Número de Oxidação (NOX)", "body": "É a carga elétrica que um átomo teria se todas as ligações fossem iônicas. Regras principais:\n\n- Substância simples: NOX = 0\n- Íon monoatômico: NOX = carga do íon\n- H: geralmente +1 (com metais: -1)\n- O: geralmente -2 (peróxidos: -1)", "order": 0}, {"id": "b9f2923f-ef3f-43f5-af7f-ec8d40f7384d", "topic_id": "dc5fa425-8308-4daf-995b-37ccbf204bf3", "heading": "Oxidação e Redução", "body": "- **Oxidação**: perde elétrons → NOX aumenta.\n- **Redução**: ganha elétrons → NOX diminui.\n\nUse o macete: **PERDOX** (PERdeu elétrons → OXidou) e **GARED** (GAnhou → REDuziu).", "order": 1}, {"id": "cd2b5944-8e40-4053-9d7d-e695069d2dd1", "topic_id": "dc5fa425-8308-4daf-995b-37ccbf204bf3", "heading": "Agentes Oxidantes e Redutores", "body": "- **Agente oxidante**: espécie que **sofre redução** (causa oxidação em outra).\n- **Agente redutor**: espécie que **sofre oxidação** (causa redução em outra).", "order": 2}], "videos": [{"id": "a9231f50-a74a-4352-b8e8-5a3d67801169", "topic_id": "dc5fa425-8308-4daf-995b-37ccbf204bf3", "title": "NOX - Número de Oxidação", "youtube_id": "3sN4o9c9Vqc", "channel": "Professor Boaro", "duration": "14:22", "order": 0}, {"id": "92e09410-fd04-4805-9b15-03e44181e27a", "topic_id": "dc5fa425-8308-4daf-995b-37ccbf204bf3", "title": "Balanceamento Redox passo a passo", "youtube_id": "n4mV5Q5uw3E", "channel": "Química em Ação", "duration": "18:05", "order": 1}], "exercises": [{"id": "6be10e5f-fee3-42ea-b828-a00ae6bc8892", "topic_id": "dc5fa425-8308-4daf-995b-37ccbf204bf3", "question": "Qual o NOX do enxofre no H₂SO₄?", "type": "mcq", "options": ["+2", "+4", "+6", "-2"], "correct_index": 2, "explanation": "2(+1) + S + 4(-2) = 0 → S = +6.", "difficulty": "médio"}, {"id": "8d66caff-bdf1-41e1-953e-cd43609a9404", "topic_id": "dc5fa425-8308-4daf-995b-37ccbf204bf3", "question": "Em uma reação redox, o agente oxidante é a espécie que:", "type": "mcq", "options": ["Sofre oxidação", "Sofre redução", "Não muda de NOX", "Perde elétrons"], "correct_index": 1, "explanation": "O agente oxidante ganha elétrons (sofre redução) e faz outro se oxidar.", "difficulty": "fácil"}, {"id": "59f32a2d-bb97-4809-97ce-7fca80bbdefc", "topic_id": "dc5fa425-8308-4daf-995b-37ccbf204bf3", "question": "Identifique o agente redutor e o agente oxidante em: Zn + Cu²⁺ → Zn²⁺ + Cu", "type": "open", "options": [], "correct_index": null, "explanation": "Zn passa de 0 para +2 (oxida) → agente redutor. Cu²⁺ passa de +2 para 0 (reduz) → agente oxidante.", "difficulty": "médio"}]}, {"id": "745b74f9-2e51-4184-804a-d21c5b67dcac", "slug": "eletroquimica-celulas-voltaicas", "title": "Células Voltaicas (Pilhas)", "module": "Eletroquímica", "description": "Funcionamento de pilhas galvânicas, potenciais padrão, ponte salina e força eletromotriz.", "content": [{"id": "ebe105f0-bbb6-499b-a9a7-419abd7297de", "topic_id": "745b74f9-2e51-4184-804a-d21c5b67dcac", "heading": "Pilha Galvânica", "body": "Uma pilha (célula voltaica) converte energia química em elétrica de maneira espontânea através de uma reação redox. Tem dois eletrodos separados, conectados por um fio e uma ponte salina.", "order": 0}, {"id": "45dd22b3-a682-42e3-91a5-83d5845fcc51", "topic_id": "745b74f9-2e51-4184-804a-d21c5b67dcac", "heading": "Ânodo e Cátodo", "body": "- **Ânodo**: eletrodo onde ocorre **oxidação** (polo negativo em pilhas).\n- **Cátodo**: eletrodo onde ocorre **redução** (polo positivo em pilhas).\n\nOs elétrons fluem pelo fio externo do ânodo para o cátodo.", "order": 1}, {"id": "62e23c23-43ff-494f-b2f9-be89b068800e", "topic_id": "745b74f9-2e51-4184-804a-d21c5b67dcac", "heading": "Potencial Padrão (ΔE°)", "body": "ΔE° = E°(cátodo) − E°(ânodo)\n\nSe ΔE° > 0, a reação é espontânea. Valores tabelados em condições padrão (25°C, 1 mol/L, 1 atm).", "order": 2}, {"id": "a544b429-f397-4387-bd1a-b61003935c12", "topic_id": "745b74f9-2e51-4184-804a-d21c5b67dcac", "heading": "Ponte Salina", "body": "Contém eletrólito inerte (ex: KNO₃) e serve para manter a neutralidade elétrica das soluções, permitindo o fluxo de íons entre os eletrodos.", "order": 3}], "videos": [{"id": "70b63e70-57de-4097-9df1-7c949446da66", "topic_id": "745b74f9-2e51-4184-804a-d21c5b67dcac", "title": "Pilhas Galvânicas - Funcionamento", "youtube_id": "8vG7XZKZ9G0", "channel": "Professor Boaro", "duration": "16:40", "order": 0}], "exercises": [{"id": "e5c2551f-c46d-4432-991f-935c95f92dc9", "topic_id": "745b74f9-2e51-4184-804a-d21c5b67dcac", "question": "Em uma pilha galvânica, no ânodo ocorre:", "type": "mcq", "options": ["Redução, é o polo positivo", "Oxidação, é o polo negativo", "Redução, é o polo negativo", "Oxidação, é o polo positivo"], "correct_index": 1, "explanation": "Ânodo = oxidação = polo negativo (fonte de elétrons).", "difficulty": "fácil"}, {"id": "61165a68-8599-43ca-944e-12cf9bdc3821", "topic_id": "745b74f9-2e51-4184-804a-d21c5b67dcac", "question": "A ponte salina em uma pilha serve para:", "type": "mcq", "options": ["Aumentar a corrente", "Manter a neutralidade elétrica das soluções", "Isolar os eletrodos", "Aumentar a diferença de potencial"], "correct_index": 1, "explanation": "A ponte salina permite o fluxo de íons entre as duas semi-células, mantendo a neutralidade.", "difficulty": "médio"}, {"id": "c4825d40-b750-45c5-9d1e-8bea6167dc03", "topic_id": "745b74f9-2e51-4184-804a-d21c5b67dcac", "question": "Dados E°(Zn²⁺/Zn) = -0,76 V e E°(Cu²⁺/Cu) = +0,34 V, qual o ΔE° da pilha Zn|Cu?", "type": "mcq", "options": ["+0,42 V", "+1,10 V", "-1,10 V", "-0,42 V"], "correct_index": 1, "explanation": "ΔE° = E°(cátodo) - E°(ânodo) = 0,34 - (-0,76) = 1,10 V.", "difficulty": "difícil"}]}, {"id": "83b986dd-6a6c-4346-b775-f18c0d2c1b0e", "slug": "eletroquimica-tabela-potenciais", "title": "Tabela de Potenciais Padrão de Redução", "module": "Eletroquímica", "description": "Como ler e usar a tabela de potenciais padrão para prever espontaneidade, força de oxidantes/redutores e calcular ΔE°.", "content": [{"id": "794b9bdb-7f82-4b9f-a3e2-12637d48e95a", "topic_id": "83b986dd-6a6c-4346-b775-f18c0d2c1b0e", "heading": "O que é a tabela?", "body": "É a lista de potenciais padrão de **redução** (E°red) de cada semi-reação, medidos em relação ao eletrodo padrão de hidrogênio (E° = 0,00 V), a 25°C, 1 mol/L, 1 atm.", "order": 0}, {"id": "b139a374-ebd2-462d-b016-a43318e395e5", "topic_id": "83b986dd-6a6c-4346-b775-f18c0d2c1b0e", "heading": "Interpretação", "body": "- Quanto **maior** o E°red → maior tendência de **sofrer redução** → melhor **agente oxidante**.\n- Quanto **menor** (mais negativo) o E°red → maior tendência de **sofrer oxidação** → melhor **agente redutor**.\n\nExemplos:\n- F₂/F⁻ = +2,87 V (melhor oxidante)\n- Li⁺/Li = -3,04 V (melhor redutor)", "order": 1}, {"id": "41f87149-facc-4225-91dd-1aa053011cbb", "topic_id": "83b986dd-6a6c-4346-b775-f18c0d2c1b0e", "heading": "Calculando ΔE° da pilha", "body": "ΔE° = E°(cátodo) − E°(ânodo)\n\nO cátodo é a semi-reação de **maior** E°red (sofre redução) e o ânodo é a de **menor** E°red (sofre oxidação, escrita invertida).\n\nSe ΔE° > 0 → espontânea (pilha). Se ΔE° < 0 → não espontânea (precisa de eletrólise).", "order": 2}, {"id": "889cd1ae-fef4-4ac0-97e1-dfc0aecf22a3", "topic_id": "83b986dd-6a6c-4346-b775-f18c0d2c1b0e", "heading": "Previsão de reações", "body": "Um metal só desloca outro que esteja **acima** dele na fila de reatividade (potencial mais positivo). Ex: Zn desloca Cu²⁺, mas Cu não desloca Zn²⁺.", "order": 3}], "videos": [{"id": "af10cfe5-240d-4983-90e7-ff0c6cde9971", "topic_id": "83b986dd-6a6c-4346-b775-f18c0d2c1b0e", "title": "Tabela de Potenciais - Como usar", "youtube_id": "cnH6oVR1uzc", "channel": "Química em Ação", "duration": "10:15", "order": 0}], "exercises": [{"id": "186f90ca-9c6c-4f41-8bb3-c09e1e159618", "topic_id": "83b986dd-6a6c-4346-b775-f18c0d2c1b0e", "question": "Na tabela de potenciais padrão de redução, quanto maior o valor de E°red, maior é a tendência da espécie de:", "type": "mcq", "options": ["Sofrer oxidação", "Sofrer redução", "Perder elétrons", "Reagir com água"], "correct_index": 1, "explanation": "Maior E°red → maior tendência de ganhar elétrons (reduzir) → melhor agente oxidante.", "difficulty": "fácil"}, {"id": "cfc6deda-083f-45fe-9f53-cc346e715f62", "topic_id": "83b986dd-6a6c-4346-b775-f18c0d2c1b0e", "question": "Dados: E°(Ag⁺/Ag) = +0,80 V; E°(Fe²⁺/Fe) = -0,44 V. Qual o ΔE° da pilha Fe|Ag?", "type": "mcq", "options": ["+0,36 V", "+1,24 V", "-1,24 V", "+0,44 V"], "correct_index": 1, "explanation": "ΔE° = E°(cátodo) − E°(ânodo) = 0,80 − (−0,44) = 1,24 V. Ag é cátodo (maior E°).", "difficulty": "médio"}, {"id": "9e091c52-0449-4748-b379-eb11b4cff937", "topic_id": "83b986dd-6a6c-4346-b775-f18c0d2c1b0e", "question": "Explique por que o metal Zinco desloca íons Cu²⁺ de uma solução, mas Cobre não desloca íons Zn²⁺.", "type": "open", "options": [], "correct_index": null, "explanation": "Zn tem E°red mais negativo (-0,76 V) que Cu²⁺/Cu (+0,34 V), portanto o Zn tende a oxidar (perder e⁻) e reduzir o Cu²⁺. O contrário não ocorre porque Cu tem menor tendência à oxidação que Zn.", "difficulty": "médio"}]}, {"id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "slug": "eletroquimica-eletrolise", "title": "Eletrólise Ígnea e Aquosa", "module": "Eletroquímica", "description": "Processos não-espontâneos: eletrólise, prioridade de descarga, leis de Faraday e aplicações industriais.", "content": [{"id": "65d97973-7631-45d5-91f7-5448661f3eb3", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "heading": "O que é Eletrólise?", "body": "Processo **não-espontâneo** (ΔE° < 0) em que se usa **corrente elétrica externa** para forçar uma reação redox. Inversa da pilha: converte energia elétrica em química.", "order": 0}, {"id": "9e03f943-fafb-4301-96cf-8c0a302a5b11", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "heading": "Ígnea vs Aquosa", "body": "- **Ígnea**: composto fundido, sem água. Só há cátions e ânions do composto. Ex: NaCl fundido → Na (cátodo) + Cl₂ (ânodo).\n- **Aquosa**: composto em solução. Água também pode reagir; obedece à **prioridade de descarga**.", "order": 1}, {"id": "8caa0780-8c85-483c-b4af-2fa6fbb36f27", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "heading": "Prioridade de Descarga (aquosa)", "body": "Cátions (descarregam no cátodo):\n1º Metais nobres (Cu, Ag, Au...) e H⁺\n2º H⁺ da água (se cátion for alcalino, alcalino-terroso ou Al³⁺)\n\nÂnions (descarregam no ânodo):\n1º Não-oxigenados (Cl⁻, Br⁻, I⁻) e OH⁻\n2º OH⁻ da água (se ânion for oxigenado como SO₄²⁻, NO₃⁻)", "order": 2}, {"id": "4bb441cd-9a95-45a7-bbeb-b49ae7c52a14", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "heading": "Leis de Faraday", "body": "1ª lei: **m = (M · i · t) / (n · F)**\n\nOnde m = massa depositada, M = massa molar, i = corrente (A), t = tempo (s), n = nº de elétrons, F = constante de Faraday = 96500 C/mol.\n\n2ª lei: para mesma carga, massas depositadas são proporcionais aos equivalentes-grama.", "order": 3}, {"id": "5f0f8fbc-8a14-460b-abb3-deb1cd392cc3", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "heading": "Aplicações", "body": "- Obtenção de Al metálico (processo Hall-Héroult).\n- Refino eletrolítico de Cu.\n- Galvanoplastia (cromagem, prateação).\n- Produção de Cl₂ e NaOH (eletrólise da salmoura).", "order": 4}], "videos": [{"id": "017a4acc-25b4-42b4-84aa-333e284c2bde", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "title": "Eletrólise Ígnea e Aquosa", "youtube_id": "9c-cRZM4l60", "channel": "Professor Boaro", "duration": "18:22", "order": 0}, {"id": "c7a7ada8-c352-41a8-ac56-d72c1ad61f06", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "title": "Leis de Faraday na Eletrólise", "youtube_id": "OqZ7RM8QaHY", "channel": "Química em Ação", "duration": "12:08", "order": 1}], "exercises": [{"id": "abb136bb-d6a7-4e42-91a7-8eca9210a864", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "question": "Na eletrólise, a diferença fundamental em relação à pilha é que:", "type": "mcq", "options": ["Não envolve reação redox", "Usa energia elétrica externa para forçar uma reação não-espontânea", "Sempre produz gás no cátodo", "Ocorre só com sais fundidos"], "correct_index": 1, "explanation": "Eletrólise é o inverso da pilha: energia elétrica → química, forçando reação não-espontânea (ΔE° < 0).", "difficulty": "fácil"}, {"id": "f6c2770f-5cd5-412a-9d86-421aee6137b4", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "question": "Na eletrólise aquosa de NaCl, qual espécie é descarregada no cátodo?", "type": "mcq", "options": ["Na⁺ formando Na metálico", "H₂O (formando H₂ e OH⁻)", "Cl⁻ formando Cl₂", "OH⁻"], "correct_index": 1, "explanation": "Na⁺ é alcalino (baixa prioridade), então descarrega H₂O da água, formando gás H₂ e íons OH⁻.", "difficulty": "médio"}, {"id": "c0602ae6-88c7-45c6-8d02-cd68dff77acb", "topic_id": "48d92c5f-4589-4145-b4fe-d2bd9e80dc5a", "question": "Uma corrente de 9,65 A é passada por 1000 s através de uma solução de CuSO₄. Qual a massa aproximada de Cu depositada? (M_Cu = 63,5; F = 96500 C/mol; n = 2)", "type": "mcq", "options": ["1,58 g", "3,17 g", "6,35 g", "12,7 g"], "correct_index": 1, "explanation": "m = (M·i·t)/(n·F) = (63,5·9,65·1000)/(2·96500) ≈ 3,17 g.", "difficulty": "difícil"}]}, {"id": "fea19e4e-0e99-4ec8-9e98-23c25e077c08", "slug": "equilibrio-introducao", "title": "Introdução ao Equilíbrio Químico", "module": "Equilíbrio Químico", "description": "Reações reversíveis, equilíbrio dinâmico e as características do estado de equilíbrio.", "content": [{"id": "e2184329-18ad-41cb-ab11-f4da0d24b078", "topic_id": "fea19e4e-0e99-4ec8-9e98-23c25e077c08", "heading": "Reações Reversíveis", "body": "Muitas reações ocorrem nos **dois sentidos** ao mesmo tempo: produtos podem reagir de volta formando reagentes. Representamos por ⇌.\n\nEx: N₂ + 3H₂ ⇌ 2NH₃", "order": 0}, {"id": "b29c4417-f6dd-476f-b47a-4004c27ed20c", "topic_id": "fea19e4e-0e99-4ec8-9e98-23c25e077c08", "heading": "Equilíbrio Dinâmico", "body": "O equilíbrio é atingido quando a **velocidade da reação direta = velocidade da reação inversa**. As concentrações **param de mudar**, mas ambas as reações continuam ocorrendo (dinâmico, não estático).", "order": 1}, {"id": "57b7b61d-6cbb-49d9-b6f5-900d1bccff7a", "topic_id": "fea19e4e-0e99-4ec8-9e98-23c25e077c08", "heading": "Características do Equilíbrio", "body": "- Sistema **fechado** (sem troca de matéria com o meio).\n- Concentrações constantes (não iguais, apenas constantes).\n- Ocorre em **qualquer temperatura** (mas o valor de K depende dela).\n- É atingido por ambos os lados (partindo de reagentes ou de produtos).", "order": 2}], "videos": [{"id": "f86a2399-a6f1-4746-bdb5-502764f24abf", "topic_id": "fea19e4e-0e99-4ec8-9e98-23c25e077c08", "title": "Equilíbrio Químico - Introdução", "youtube_id": "M2SO1UEjnBQ", "channel": "Professor Boaro", "duration": "13:50", "order": 0}], "exercises": [{"id": "f35f15e3-62c9-475b-91fe-2f77d2015f44", "topic_id": "fea19e4e-0e99-4ec8-9e98-23c25e077c08", "question": "O equilíbrio químico é chamado de dinâmico porque:", "type": "mcq", "options": ["As concentrações mudam constantemente", "As reações direta e inversa continuam ocorrendo com a mesma velocidade", "A temperatura oscila", "Os produtos são convertidos em reagentes de forma unilateral"], "correct_index": 1, "explanation": "No equilíbrio, v_direta = v_inversa. As reações continuam, apenas as concentrações ficam constantes.", "difficulty": "fácil"}, {"id": "199bcabe-dfa7-48cf-bb65-a82b928fcf98", "topic_id": "fea19e4e-0e99-4ec8-9e98-23c25e077c08", "question": "Qual condição é necessária para atingir o equilíbrio?", "type": "mcq", "options": ["Sistema aberto", "Sistema fechado", "Ausência de catalisador", "Temperatura baixa"], "correct_index": 1, "explanation": "Sistema fechado impede a saída/entrada de matéria, permitindo que as duas reações se igualem.", "difficulty": "fácil"}]}, {"id": "63bba727-bbed-4d55-94cc-e5ea980f9c14", "slug": "equilibrio-constante", "title": "Constante de Equilíbrio (Kc e Kp)", "module": "Equilíbrio Químico", "description": "Lei da ação das massas, Kc, Kp, relação entre eles e o significado dos valores.", "content": [{"id": "b709754c-69fc-4f68-a119-897bd957fa75", "topic_id": "63bba727-bbed-4d55-94cc-e5ea980f9c14", "heading": "Lei da Ação das Massas", "body": "Para uma reação genérica: aA + bB ⇌ cC + dD\n\nA constante de equilíbrio é:\n\n**Kc = ([C]^c · [D]^d) / ([A]^a · [B]^b)**\n\nSempre **produtos sobre reagentes**, elevados aos coeficientes estequiométricos. Sólidos e líquidos puros **não entram** na expressão.", "order": 0}, {"id": "72bc5bb4-8439-4cd2-9013-3908139517cb", "topic_id": "63bba727-bbed-4d55-94cc-e5ea980f9c14", "heading": "Kp para Gases", "body": "Quando os participantes são gasosos, usa-se pressão parcial:\n\n**Kp = (P_C^c · P_D^d) / (P_A^a · P_B^b)**\n\nRelação com Kc:\n\n**Kp = Kc · (RT)^Δn**\n\nOnde Δn = (mols de gás produtos) − (mols de gás reagentes).", "order": 1}, {"id": "622e4e36-2dce-474e-a089-30faf354b95d", "topic_id": "63bba727-bbed-4d55-94cc-e5ea980f9c14", "heading": "Interpretando o Valor de K", "body": "- **K >> 1**: equilíbrio deslocado para produtos (reação favorece produtos).\n- **K << 1**: equilíbrio deslocado para reagentes.\n- **K ≈ 1**: quantidades comparáveis de reagentes e produtos.\n\nK depende **apenas da temperatura**; não muda com concentração, pressão ou catalisador.", "order": 2}], "videos": [{"id": "5af05890-fee2-41e4-99a8-9f0950cc7486", "topic_id": "63bba727-bbed-4d55-94cc-e5ea980f9c14", "title": "Kc e Kp - Constantes de Equilíbrio", "youtube_id": "8f9EExkX8f0", "channel": "Química em Ação", "duration": "15:40", "order": 0}], "exercises": [{"id": "ea45f052-79aa-4158-b652-103972ef0ed9", "topic_id": "63bba727-bbed-4d55-94cc-e5ea980f9c14", "question": "Para a reação 2SO₂(g) + O₂(g) ⇌ 2SO₃(g), a expressão de Kc é:", "type": "mcq", "options": ["[SO₃]/([SO₂][O₂])", "[SO₃]²/([SO₂]²[O₂])", "([SO₂]²[O₂])/[SO₃]²", "[SO₂][O₂]/[SO₃]"], "correct_index": 1, "explanation": "Kc = [produtos]/[reagentes], cada um elevado ao seu coeficiente: [SO₃]²/([SO₂]²·[O₂]).", "difficulty": "fácil"}, {"id": "9cc6c85a-88b5-4860-b933-6b65b32ae834", "topic_id": "63bba727-bbed-4d55-94cc-e5ea980f9c14", "question": "Se Kc de uma reação é 1,0 × 10⁻⁸, podemos afirmar que:", "type": "mcq", "options": ["A reação é rápida", "Predominam produtos no equilíbrio", "Predominam reagentes no equilíbrio", "A reação está fora do equilíbrio"], "correct_index": 2, "explanation": "K << 1 significa que no equilíbrio há muito mais reagentes que produtos.", "difficulty": "fácil"}, {"id": "167728d2-d7a7-4cd3-82ef-6c15e0a0acbb", "topic_id": "63bba727-bbed-4d55-94cc-e5ea980f9c14", "question": "Explique por que o valor de Kc não depende das concentrações iniciais dos reagentes, mas apenas da temperatura.", "type": "open", "options": [], "correct_index": null, "explanation": "K é definido pela razão de constantes de velocidade (k_direta/k_inversa). As constantes de velocidade só dependem da T (equação de Arrhenius), logo K só varia com a temperatura.", "difficulty": "médio"}]}, {"id": "98cd6207-8150-4a4d-9ddc-694f164e9337", "slug": "equilibrio-calculos-k", "title": "Cálculos de K e Princípio de Le Chatelier", "module": "Equilíbrio Químico", "description": "Como calcular K a partir de concentrações, quociente Q vs K, e o deslocamento de equilíbrio segundo Le Chatelier.", "content": [{"id": "781d77b8-b2f9-41eb-a0b1-47c2c092364d", "topic_id": "98cd6207-8150-4a4d-9ddc-694f164e9337", "heading": "Calculando K", "body": "Passos:\n1. Escreva a expressão de K.\n2. Monte a **tabela ICE** (Início, Change/Variação, Equilíbrio) com concentrações.\n3. Substitua os valores no equilíbrio.\n\nEx: H₂ + I₂ ⇌ 2HI, com [H₂]eq = 0,2, [I₂]eq = 0,2 e [HI]eq = 1,6 → Kc = (1,6)²/(0,2·0,2) = 64.", "order": 0}, {"id": "aaf4c40d-67cc-4c80-9a9f-6b9bd75c7137", "topic_id": "98cd6207-8150-4a4d-9ddc-694f164e9337", "heading": "Quociente Q vs K", "body": "Q é calculado com concentrações **fora do equilíbrio** (mesmo formato de K).\n\n- **Q < K**: reação avança para direita (produtos).\n- **Q > K**: reação retrocede (reagentes).\n- **Q = K**: sistema em equilíbrio.", "order": 1}, {"id": "76b1b1ff-cb31-47c7-a8b8-605bbd9cfb07", "topic_id": "98cd6207-8150-4a4d-9ddc-694f164e9337", "heading": "Princípio de Le Chatelier", "body": "Se um sistema em equilíbrio sofrer perturbação, ele se desloca no sentido que **minimize** essa perturbação.\n\n- **↑ Concentração** de A → equilíbrio se desloca para consumi-la (direita).\n- **↑ Pressão** → desloca para o lado com **menos** mols de gás.\n- **↑ Temperatura** (endotérmica) → desloca para direita; se exotérmica, para esquerda.\n- **Catalisador** não desloca o equilíbrio, só acelera para atingi-lo.", "order": 2}], "videos": [{"id": "b640d939-de8d-4453-9f18-780f534476fd", "topic_id": "98cd6207-8150-4a4d-9ddc-694f164e9337", "title": "Cálculos de K - Tabela ICE", "youtube_id": "R6L6yWr7v5U", "channel": "Professor Boaro", "duration": "17:20", "order": 0}, {"id": "b96f0faf-dc5b-4595-8f0d-c279c4a39026", "topic_id": "98cd6207-8150-4a4d-9ddc-694f164e9337", "title": "Princípio de Le Chatelier", "youtube_id": "4qz7VOKrDdo", "channel": "Química em Ação", "duration": "11:35", "order": 1}], "exercises": [{"id": "2b6d02b5-3c71-4acd-9767-d59d383be539", "topic_id": "98cd6207-8150-4a4d-9ddc-694f164e9337", "question": "Para H₂ + I₂ ⇌ 2HI, no equilíbrio [H₂] = 0,1 mol/L, [I₂] = 0,1 mol/L e [HI] = 0,8 mol/L. Qual o valor de Kc?", "type": "mcq", "options": ["8", "16", "32", "64"], "correct_index": 3, "explanation": "Kc = [HI]²/([H₂][I₂]) = 0,64/(0,01) = 64.", "difficulty": "médio"}, {"id": "e52e485e-48f1-43ec-bb1e-b275c082c93b", "topic_id": "98cd6207-8150-4a4d-9ddc-694f164e9337", "question": "Em uma reação exotérmica em equilíbrio, o que acontece se aumentarmos a temperatura?", "type": "mcq", "options": ["Equilíbrio se desloca para produtos", "Equilíbrio se desloca para reagentes", "K aumenta", "Nada muda"], "correct_index": 1, "explanation": "Aumentar T em reação exotérmica desloca para o lado endotérmico (reagentes) para absorver o calor extra.", "difficulty": "médio"}, {"id": "4362b934-bdcd-41c3-abdb-ee08bee0643e", "topic_id": "98cd6207-8150-4a4d-9ddc-694f164e9337", "question": "Para N₂ + 3H₂ ⇌ 2NH₃, se calcularmos Q e obtermos Q > K, o que ocorre?", "type": "mcq", "options": ["Sistema já em equilíbrio", "Reação avança formando mais NH₃", "Reação recua formando mais N₂ e H₂", "Impossível calcular"], "correct_index": 2, "explanation": "Q > K → excesso de produtos → sistema se ajusta consumindo produtos e formando reagentes.", "difficulty": "difícil"}]}]};
+
+// storage
+const K_PROG="eq_progress", K_OPEN="eq_open";
+const load=(k)=>{try{return JSON.parse(localStorage.getItem(k)||"{}")}catch{return{}}};
+const save=(k,v)=>localStorage.setItem(k,JSON.stringify(v));
+
+// routing
+function parseHash(){
+  const h=location.hash.replace(/^#\/?/,"")||"";
+  const parts=h.split("/").filter(Boolean);
+  return {page:parts[0]||"home", id:parts[1]};
+}
+window.addEventListener("hashchange",render);
+window.addEventListener("load",render);
+
+function el(html){const d=document.createElement("div");d.innerHTML=html.trim();return d.firstElementChild;}
+function esc(s){return (s||"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function md(s){s=esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");return `<p>${s}</p>`;}
+
+function renderNav(){
+  const cur=parseHash().page;
+  const items=[["","Início","home"],["topicos","Tópicos","topicos"],["revisao","Revisão","revisao"],["progresso","Progresso","progresso"]];
+  document.getElementById("nav").innerHTML=items.map(([hash,label,key])=>`
+    <a href="#/${hash}" class="font-mono text-xs uppercase tracking-[0.2em] px-3 py-2 border transition-colors ${cur===key?"bg-[color:var(--ink)] text-white border-[color:var(--ink)]":"border-transparent hover:border-[color:var(--ink)]"}">${label}</a>
+  `).join("");
+}
+
+function moduleIcon(mod){
+  if(mod.includes("Cinética")) return "⏱";
+  if(mod.includes("Eletroquímica")) return "⚡";
+  return "⚗";
+}
+
+function pageHome(){
+  const mods=[...new Set(DATA.topics.map(t=>t.module))];
+  return `
+  <section class="grid-bg -mx-6 px-6 py-12 border-b border-[color:var(--line)] mb-12">
+    <div class="max-w-5xl">
+      <div class="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--soft)] mb-3">— Plataforma de estudos · Química · Offline</div>
+      <h1 class="font-heading text-5xl lg:text-7xl leading-none mb-5">Aprenda química<br><em class="font-normal">como quem faz</em> <span class="bg-[color:var(--yellow)] px-2 -rotate-1 inline-block">ciência.</span></h1>
+      <p class="text-lg text-[color:var(--soft)] max-w-xl mb-6">Conteúdo, exercícios, vídeos e revisão. Tudo em um único arquivo HTML — seu progresso fica salvo no navegador.</p>
+      <div class="flex gap-3 flex-wrap">
+        <a href="#/topicos" class="bg-[color:var(--blue)] text-white px-6 py-4 font-mono text-xs uppercase tracking-[0.2em] hover:bg-blue-800">Começar a estudar →</a>
+        <a href="#/revisao" class="border border-[color:var(--ink)] px-6 py-4 font-mono text-xs uppercase tracking-[0.2em] hover:bg-[color:var(--ink)] hover:text-white">Modo revisão</a>
+      </div>
+    </div>
+  </section>
+  <h2 class="font-heading text-3xl mb-6">Módulos</h2>
+  <div class="grid md:grid-cols-3 gap-6">
+    ${mods.map(m=>{
+      const ts=DATA.topics.filter(t=>t.module===m);
+      return `<div class="border border-[color:var(--ink)] p-6"><div class="text-3xl mb-3">${moduleIcon(m)}</div><div class="font-display font-bold text-xl mb-2">${esc(m)}</div><div class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--soft)] mb-4">${ts.length} tópicos</div><ul class="text-sm space-y-1">${ts.map(t=>`<li>· <a href="#/topico/${t.id}" class="hover:text-[color:var(--blue)]">${esc(t.title)}</a></li>`).join("")}</ul></div>`;
+    }).join("")}
+  </div>`;
+}
+
+function pageTopics(){
+  return `<h1 class="font-heading text-5xl mb-8">Tópicos</h1>
+  <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+    ${DATA.topics.map((t,i)=>`
+    <a href="#/topico/${t.id}" class="block border border-[color:var(--line)] bg-white p-6 hard-shadow">
+      <div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-4">Módulo · ${esc(t.module)}</div>
+      <div class="text-2xl mb-3">${moduleIcon(t.module)}</div>
+      <div class="font-display font-bold text-lg mb-2">${esc(t.title)}</div>
+      <p class="text-sm text-[color:var(--soft)]">${esc(t.description)}</p>
+    </a>`).join("")}
+  </div>`;
+}
+
+function pageTopic(id){
+  const t=DATA.topics.find(x=>x.id===id);
+  if(!t) return `<p>Tópico não encontrado. <a href="#/topicos" class="underline">Ver todos</a></p>`;
+  const tab=(new URLSearchParams(location.hash.split("?")[1]||"")).get("t")||"content";
+  return `
+  <a href="#/topicos" class="font-mono text-[10px] uppercase tracking-[0.2em] text-[color:var(--soft)] hover:text-[color:var(--ink)]">← Voltar</a>
+  <div class="border-b border-[color:var(--ink)] pb-6 mb-6 mt-4">
+    <div class="font-mono text-[10px] uppercase tracking-[0.3em] text-[color:var(--soft)] mb-2">Módulo · ${esc(t.module)}</div>
+    <h1 class="font-heading text-4xl lg:text-5xl">${esc(t.title)}</h1>
+    <p class="text-lg text-[color:var(--soft)] mt-3 max-w-3xl">${esc(t.description)}</p>
+  </div>
+  <div class="border-b border-[color:var(--line)] mb-6 flex gap-0 flex-wrap">
+    ${[["content","Conteúdo"],["exercises","Exercícios"],["videos","Vídeos"]].map(([k,l])=>`
+      <a href="#/topico/${id}?t=${k}" class="px-4 py-3 font-mono text-xs uppercase tracking-[0.2em] border-b-2 ${tab===k?"border-[color:var(--blue)] text-[color:var(--blue)]":"border-transparent text-[color:var(--soft)]"}">${l}</a>
+    `).join("")}
+  </div>
+  <div id="tab-content">${tab==="content"?tabContent(t):tab==="exercises"?tabExercises(t):tabVideos(t)}</div>
+  `;
+}
+
+function tabContent(t){
+  return `<div class="max-w-3xl">${t.content.map((c,i)=>`
+    <section class="border-l-4 border-[color:var(--ink)] pl-6 py-2 mb-8">
+      <div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-1">§${String(i+1).padStart(2,"0")}</div>
+      <h2 class="font-display font-bold text-2xl mb-3">${esc(c.heading)}</h2>
+      <div class="prose">${md(c.body)}</div>
+    </section>`).join("")}</div>`;
+}
+
+function tabExercises(t){
+  const mcq=t.exercises.filter(e=>e.type==="mcq");
+  const open=t.exercises.filter(e=>e.type==="open");
+  return `
+    ${mcq.length?`<h2 class="font-display font-bold text-2xl mb-4">Múltipla escolha</h2>
+    <div class="space-y-6 mb-10">${mcq.map((e,i)=>mcqCard(e,i,t.id)).join("")}</div>`:""}
+    ${open.length?`<h2 class="font-display font-bold text-2xl mb-4">Questões abertas</h2>
+    <div class="space-y-6">${open.map((e,i)=>openCard(e,i,t.id)).join("")}</div>`:""}
+  `;
+}
+
+function mcqCard(e,i,tid){
+  return `<div class="border border-[color:var(--ink)] p-6" data-mcq="${e.id}">
+    <div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-3">Q${String(i+1).padStart(2,"0")} · ${esc(e.difficulty)}</div>
+    <p class="text-[17px] font-medium mb-5">${esc(e.question)}</p>
+    <div class="space-y-2 opts">${e.options.map((o,idx)=>`
+      <button data-idx="${idx}" class="opt w-full text-left border border-[color:var(--line)] p-4 flex gap-4 hover:border-[color:var(--ink)]">
+        <span class="font-mono text-xs w-6">${String.fromCharCode(65+idx)}</span><span class="flex-1 text-sm">${esc(o)}</span>
+      </button>`).join("")}</div>
+    <button class="verify mt-5 bg-[color:var(--ink)] text-white px-5 py-3 font-mono text-xs uppercase tracking-[0.2em] hover:bg-[color:var(--blue)] disabled:opacity-40" disabled>Verificar</button>
+    <div class="expl mt-4 hidden border-l-4 border-[color:var(--ink)] pl-4 py-2 bg-[color:var(--bg)]"><div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-1">Explicação</div><p class="text-sm"></p></div>
+  </div>`;
+}
+
+function openCard(e,i,tid){
+  const saved=(load(K_OPEN)[e.id])||{};
+  return `<div class="border border-[color:var(--ink)] p-6" data-open="${e.id}" data-tid="${tid}">
+    <div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-3 flex justify-between"><span>Q${String(i+1).padStart(2,"0")} · Aberta · ${esc(e.difficulty)}</span>${saved.answer?'<span class="text-[color:var(--green)]">✓ Salva</span>':""}</div>
+    <p class="text-[17px] font-medium mb-4">${esc(e.question)}</p>
+    <textarea rows="4" class="answer w-full border-b-2 border-[color:var(--line)] focus:border-[color:var(--blue)] outline-none py-2 bg-transparent resize-none text-sm" placeholder="Escreva sua resposta...">${esc(saved.answer||"")}</textarea>
+    <div class="flex gap-2 mt-4 flex-wrap">
+      <button class="save-open bg-[color:var(--blue)] text-white px-4 py-2 font-mono text-xs uppercase tracking-[0.2em]">Salvar resposta</button>
+      <button class="toggle-gab border border-[color:var(--ink)] px-4 py-2 font-mono text-xs uppercase tracking-[0.2em] hover:bg-[color:var(--ink)] hover:text-white">Ver gabarito</button>
+    </div>
+    <div class="gab mt-4 hidden border-l-4 border-[color:var(--blue)] pl-4 py-2 bg-[color:var(--bg)]"><div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-1">Gabarito</div><p class="text-sm">${esc(e.explanation)}</p></div>
+  </div>`;
+}
+
+function tabVideos(t){
+  if(!t.videos.length) return `<p class="text-sm text-[color:var(--soft)]">Sem vídeos.</p>`;
+  return `<div class="grid lg:grid-cols-2 gap-8">${t.videos.map(v=>`
+    <div class="border border-[color:var(--ink)]">
+      <div class="aspect-video bg-black"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${esc(v.youtube_id)}" allowfullscreen></iframe></div>
+      <div class="p-4 border-t border-[color:var(--ink)]">
+        <div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-1">${esc(v.channel)} · ${esc(v.duration)}</div>
+        <div class="font-display font-semibold">${esc(v.title)}</div>
+      </div></div>`).join("")}</div>`;
+}
+
+function pageProgress(){
+  const prog=load(K_PROG);
+  const open=load(K_OPEN);
+  const total=Object.keys(prog).length;
+  const correct=Object.values(prog).filter(p=>p.correct).length;
+  const acc=total?Math.round(correct/total*100):0;
+  const byTopic={};
+  for(const [exid,p] of Object.entries(prog)){
+    byTopic[p.topic_id]=byTopic[p.topic_id]||{c:0,t:0};
+    byTopic[p.topic_id].t++; if(p.correct) byTopic[p.topic_id].c++;
+  }
+  return `<h1 class="font-heading text-5xl mb-8">Progresso</h1>
+  <div class="grid md:grid-cols-3 border border-[color:var(--ink)] mb-10">
+    <div class="p-6"><div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)]">Total</div><div class="font-heading text-4xl">${total}</div></div>
+    <div class="p-6 border-l border-r border-[color:var(--ink)]"><div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)]">Acertos</div><div class="font-heading text-4xl">${correct}</div></div>
+    <div class="p-6 bg-[color:var(--ink)] text-white"><div class="font-mono text-[10px] uppercase tracking-[0.25em] opacity-60">Precisão</div><div class="font-heading text-4xl">${acc}%</div></div>
+  </div>
+  <h2 class="font-display font-bold text-2xl mb-4">Por tópico</h2>
+  ${Object.keys(byTopic).length?Object.entries(byTopic).map(([tid,s])=>{
+    const t=DATA.topics.find(x=>x.id===tid);const pct=s.t?(s.c/s.t*100):0;
+    return `<div class="border border-[color:var(--line)] p-4 mb-3"><div class="flex justify-between mb-2"><span class="font-display font-semibold text-sm">${t?esc(t.title):tid}</span><span class="font-mono text-xs text-[color:var(--soft)]">${s.c}/${s.t}</span></div><div class="h-2 bg-[color:var(--bg)]"><div class="h-full bg-[color:var(--yellow)]" style="width:${pct}%"></div></div></div>`;
+  }).join(""):`<p class="text-sm text-[color:var(--soft)]">Responda exercícios para ver seu progresso aqui.</p>`}
+  <h2 class="font-display font-bold text-2xl mt-10 mb-4">Minhas respostas abertas</h2>
+  ${Object.keys(open).length?Object.entries(open).map(([exid,o])=>`
+    <details class="border border-[color:var(--line)] p-4 mb-3"><summary class="cursor-pointer font-display font-semibold text-sm">${esc(o.question||"Questão")}</summary>
+    <div class="mt-3"><div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-1">Sua resposta</div><div class="bg-[color:var(--bg)] p-3 border-l-2 border-[color:var(--ink)] text-sm whitespace-pre-wrap">${esc(o.answer)}</div></div>
+    <div class="mt-3"><div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-1">Gabarito</div><div class="bg-[color:var(--bg)] p-3 border-l-2 border-[color:var(--blue)] text-sm">${esc(o.gabarito||"")}</div></div></details>`).join(""):`<p class="text-sm text-[color:var(--soft)]">Nenhuma resposta aberta salva ainda.</p>`}`;
+}
+
+function pageRevision(){
+  const prog=load(K_PROG);
+  const wrongIds=Object.entries(prog).filter(([_,p])=>!p.correct).map(([id])=>id);
+  let pool=[];
+  for(const t of DATA.topics) for(const e of t.exercises) if(e.type==="mcq" && wrongIds.includes(e.id)) pool.push({...e,topic_id:t.id});
+  if(!pool.length){pool=[];for(const t of DATA.topics) for(const e of t.exercises) if(e.type==="mcq") pool.push({...e,topic_id:t.id});pool.sort(()=>Math.random()-.5);pool=pool.slice(0,10);}
+  return `<div class="bg-[#FFFBEC] -mx-6 px-6 py-8 min-h-[80vh]">
+    <h1 class="font-heading text-4xl mb-2">Modo Revisão</h1>
+    <p class="text-[color:var(--soft)] mb-8">${wrongIds.length?"Suas questões erradas.":"Amostra aleatória para praticar."}</p>
+    <div class="max-w-3xl space-y-6">${pool.map((e,i)=>mcqCard(e,i,e.topic_id)).join("")}</div>
+  </div>`;
+}
+
+function render(){
+  renderNav();
+  const {page,id}=parseHash();
+  const map={home:pageHome,topicos:pageTopics,revisao:pageRevision,progresso:pageProgress};
+  const html=page==="topico"?pageTopic(id):(map[page]||pageHome)();
+  document.getElementById("app").innerHTML=html;
+  bind();
+}
+
+function bind(){
+  document.querySelectorAll("[data-mcq]").forEach(card=>{
+    const exid=card.dataset.mcq;
+    const opts=card.querySelectorAll(".opt");
+    const verify=card.querySelector(".verify");
+    let sel=null;
+    opts.forEach(o=>o.onclick=()=>{opts.forEach(x=>x.classList.remove("border-[color:var(--blue)]","bg-blue-50"));o.classList.add("border-[color:var(--blue)]","bg-blue-50");sel=+o.dataset.idx;verify.disabled=false;});
+    verify.onclick=()=>{
+      const ex=findEx(exid);const correct=sel===ex.correct_index;
+      opts.forEach((o,idx)=>{o.disabled=true;if(idx===ex.correct_index)o.className="opt w-full text-left border p-4 flex gap-4 border-[color:var(--green)] bg-[color:var(--green)] text-white";else if(idx===sel)o.className="opt w-full text-left border p-4 flex gap-4 border-[color:var(--red)] bg-[color:var(--red)] text-white";});
+      verify.disabled=true;const expl=card.querySelector(".expl");expl.classList.remove("hidden");expl.querySelector("p").textContent=ex.explanation;
+      const prog=load(K_PROG);const topic=DATA.topics.find(t=>t.exercises.some(e=>e.id===exid));
+      prog[exid]={correct,topic_id:topic?topic.id:null,ts:Date.now()};save(K_PROG,prog);
+    };
+  });
+  document.querySelectorAll("[data-open]").forEach(card=>{
+    const exid=card.dataset.open;const ex=findEx(exid);
+    card.querySelector(".save-open").onclick=()=>{
+      const ans=card.querySelector(".answer").value.trim();if(!ans)return;
+      const st=load(K_OPEN);st[exid]={answer:ans,question:ex.question,gabarito:ex.explanation,topic_id:card.dataset.tid,ts:Date.now()};save(K_OPEN,st);
+      alert("Resposta salva!");render();
+    };
+    card.querySelector(".toggle-gab").onclick=()=>card.querySelector(".gab").classList.toggle("hidden");
+  });
+}
+function findEx(id){for(const t of DATA.topics) for(const e of t.exercises) if(e.id===id) return e;}
+</script>
+</body>
+</html>

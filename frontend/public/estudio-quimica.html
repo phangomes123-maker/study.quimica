@@ -179,12 +179,9 @@ function openCard(e,i,tid){
 function tabVideos(t){
   if(!t.videos.length) return `<p class="text-sm text-[color:var(--soft)]">Sem vídeos.</p>`;
   return `<div class="grid lg:grid-cols-2 gap-8">${t.videos.map(v=>`
-    <div class="border border-[color:var(--ink)]">
-      <div class="aspect-video bg-black"><iframe class="w-full h-full" src="https://www.youtube.com/embed/${esc(v.youtube_id)}" allowfullscreen></iframe></div>
-      <div class="p-4 border-t border-[color:var(--ink)]">
-        <div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-1">${esc(v.channel)} · ${esc(v.duration)}</div>
-        <div class="font-display font-semibold">${esc(v.title)}</div>
-      </div></div>`).join("")}</div>`;
+    <a href="https://www.youtube.com/results?search_query=${encodeURIComponent(t.title+' '+t.module)}" target="_blank" class="block border border-[color:var(--ink)] hover:shadow-[6px_6px_0_var(--ink)] transition-transform hover:-translate-x-1 hover:-translate-y-1">
+      <div class="aspect-video bg-gradient-to-br from-[color:var(--red)] to-[color:var(--blue)] flex items-center justify-center"><div class="w-16 h-16 bg-white rounded-full flex items-center justify-center"><div style="width:0;height:0;border-left:16px solid var(--red);border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px"></div></div></div>
+      <div class="p-4 border-t border-[color:var(--ink)]"><div class="font-mono text-[10px] uppercase tracking-[0.25em] text-[color:var(--soft)] mb-1">Buscar no YouTube · ${esc(v.duration)}</div><div class="font-display font-semibold">${esc(v.title)}</div></div></a>`).join("")}</div>`;
 }
 
 function pageProgress(){

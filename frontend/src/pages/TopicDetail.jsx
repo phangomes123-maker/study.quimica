@@ -119,7 +119,7 @@ export default function TopicDetail() {
         />
       )}
       {tab === "exercises" && <ExercisesView exercises={exercises} />}
-      {tab === "videos" && <VideosView videos={videos} />}
+      {tab === "videos" && <VideosView videos={videos} topic={topic} />}
     </div>
   );
 }
@@ -389,30 +389,42 @@ function OpenCard({ exercise, index }) {
   );
 }
 
-function VideosView({ videos }) {
+function VideosView({ videos, topic }) {
   if (!videos.length) return <Empty text="Sem vídeos para este tópico." />;
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8" data-testid="videos-view">
-      {videos.map((v) => (
-        <div key={v.id} className="border border-[#0F1115]" data-testid={`video-${v.id}`}>
-          <div className="aspect-video bg-black">
-            <iframe
-              className="w-full h-full"
-              src={`https://www.youtube.com/embed/${v.youtube_id}`}
-              title={v.title}
-              frameBorder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-          <div className="p-4 border-t border-[#0F1115]">
-            <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-1">
-              {v.channel} · {v.duration}
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" data-testid="videos-view">
+      {videos.map((v) => {
+        const q = encodeURIComponent(`${topic.title} ${topic.module} aula`);
+        const searchUrl = `https://www.youtube.com/results?search_query=${q}`;
+        return (
+          <a
+            key={v.id}
+            href={searchUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-testid={`video-${v.id}`}
+            className="block border border-[#0F1115] hard-shadow-hover bg-white group"
+          >
+            <div className="aspect-video bg-gradient-to-br from-[#FF3300] to-[#0022FF] flex items-center justify-center relative overflow-hidden">
+              <div className="absolute inset-0 grid-bg opacity-30" />
+              <div className="relative w-16 h-16 bg-white flex items-center justify-center rounded-full shadow-2xl group-hover:scale-110 transition-transform">
+                <div className="w-0 h-0 border-l-[16px] border-l-[#FF3300] border-y-[10px] border-y-transparent ml-1" />
+              </div>
             </div>
-            <div className="font-display font-semibold text-base">{v.title}</div>
-          </div>
-        </div>
-      ))}
+            <div className="p-4 border-t border-[#0F1115]">
+              <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-1">
+                Buscar no YouTube · {v.duration}
+              </div>
+              <div className="font-display font-semibold text-base group-hover:text-[#0022FF]">
+                {v.title}
+              </div>
+              <div className="mt-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5C5F66]">
+                Abre a busca no YouTube →
+              </div>
+            </div>
+          </a>
+        );
+      })}
     </div>
   );
 }

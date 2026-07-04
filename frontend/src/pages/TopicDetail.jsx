@@ -394,7 +394,7 @@ function VideosView({ videos, topic }) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6" data-testid="videos-view">
       {videos.map((v) => {
-        const q = encodeURIComponent(`${topic.title} ${topic.module} aula`);
+        const q = encodeURIComponent(`${v.title} química ${topic.module}`);
         const searchUrl = `https://www.youtube.com/results?search_query=${q}`;
         return (
           <a
@@ -403,7 +403,7 @@ function VideosView({ videos, topic }) {
             target="_blank"
             rel="noopener noreferrer"
             data-testid={`video-${v.id}`}
-            className="block border border-[#0F1115] hard-shadow-hover bg-white group"
+            className="block border border-[#0F1115] hard-shadow-hover bg-white group cursor-pointer"
           >
             <div className="aspect-video bg-gradient-to-br from-[#FF3300] to-[#0022FF] flex items-center justify-center relative overflow-hidden">
               <div className="absolute inset-0 grid-bg opacity-30" />
@@ -418,8 +418,8 @@ function VideosView({ videos, topic }) {
               <div className="font-display font-semibold text-base group-hover:text-[#0022FF]">
                 {v.title}
               </div>
-              <div className="mt-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5C5F66]">
-                Abre a busca no YouTube →
+              <div className="mt-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#0022FF] underline">
+                ▶ Abrir busca no YouTube
               </div>
             </div>
           </a>

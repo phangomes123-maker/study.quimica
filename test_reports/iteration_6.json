@@ -1,0 +1,20 @@
+{
+  "summary": "Frontend-only verification of the YouTube video cards fix in TopicDetail.jsx. Tested 3 topics from 3 different modules (Cinética Química, Eletroquímica, Equilíbrio Químico), covering 5 video cards total. All cards render as <a> tags with target=_blank, rel=noopener noreferrer, valid href pointing to https://www.youtube.com/results?search_query=... with the video title + 'química' + topic module encoded. The '▶ Abrir busca no YouTube' text is present in each card (rendered uppercase via CSS). Zero iframe elements remain inside the videos-view — the old broken embeds are gone. The entire card is clickable (588x429 px) — clicking the geometric center opens a new tab that lands on a valid YouTube search results page with 13 ytd-video-renderer results (title: 'Cinética Química - Introdução e Velocidade Média química Cinética Química - YouTube').",
+  "tested_scope": ["frontend", "integration"],
+  "passed": [
+    "GET /api/topics returns 13 topics (200)",
+    "Videos tab renders on Cinética Química, Eletroquímica, and Equilíbrio Químico topics",
+    "5/5 video cards are <a> tags with target=_blank and rel=noopener noreferrer",
+    "All hrefs match https://www.youtube.com/results?search_query=<title>%20química%20<module>",
+    "Text '▶ Abrir busca no YouTube' present inside every card",
+    "0 iframe elements found inside [data-testid=videos-view] across all 3 topics",
+    "Whole card is clickable (588x429 px hit area) — clicking center opens new tab",
+    "Click opens new tab with valid YouTube search URL",
+    "YouTube search page loads with 13 relevant ytd-video-renderer results (not empty)"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}

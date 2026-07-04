@@ -517,7 +517,7 @@ SEED_EXERCISES = {
 }
 
 
-async def seed_database():
+async def seed_database() -> None:
     """Seed the database idempotently by slug. Adds new topics without touching existing ones."""
     topic_id_by_slug = {}
     existing = await db.topics.find({}, {"_id": 0}).to_list(500)
@@ -589,7 +589,7 @@ async def get_exercises(topic_id: str):
 
 
 @api_router.get("/topics/{topic_id}/summary")
-async def get_summary(topic_id: str):
+async def get_summary(topic_id: str) -> dict:
     doc = await db.summaries.find_one({"topic_id": topic_id}, {"_id": 0})
     if not doc:
         return {"exists": False, "content": None}
@@ -597,7 +597,7 @@ async def get_summary(topic_id: str):
 
 
 @api_router.post("/topics/{topic_id}/summary/generate")
-async def generate_summary(topic_id: str):
+async def generate_summary(topic_id: str) -> dict:
     topic_doc = await db.topics.find_one({"id": topic_id}, {"_id": 0})
     if not topic_doc:
         raise HTTPException(404, "Topic not found")
@@ -621,6 +621,7 @@ async def generate_summary(topic_id: str):
         f"CONTEÚDO:\n{joined}"
     )
 
+    summary_text: str = ""
     try:
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
@@ -643,13 +644,14 @@ async def generate_summary(topic_id: str):
 
 
 @api_router.post("/exercises/answer")
-async def submit_answer(req: AnswerRequest):
+async def submit_answer(req: AnswerRequest) -> dict:
     ex_doc = await db.exercises.find_one({"id": req.exercise_id}, {"_id": 0})
     if not ex_doc:
         raise HTTPException(404, "Exercise not found")
 
     ex = Exercise(**ex_doc)
-    correct = False
+    correct: bool = False
+    # Note: `is not None` is intentional (PEP 8 mandates `is`/`is not` for None comparisons).
     if ex.type == "mcq" and req.selected_index is not None:
         correct = (req.selected_index == ex.correct_index)
 
@@ -670,7 +672,7 @@ async def submit_answer(req: AnswerRequest):
 
 
 @api_router.get("/progress/{session_id}")
-async def get_progress(session_id: str):
+async def get_progress(session_id: str) -> dict:
     docs = await db.progress.find({"session_id": session_id}, {"_id": 0}).to_list(1000)
     total = len(docs)
     correct = sum(1 for d in docs if d["correct"])
@@ -695,7 +697,7 @@ async def get_progress(session_id: str):
 
 
 @api_router.post("/open-answers")
-async def save_open_answer(req: OpenAnswerRequest):
+async def save_open_answer(req: OpenAnswerRequest) -> dict:
     ex_doc = await db.exercises.find_one({"id": req.exercise_id}, {"_id": 0})
     if not ex_doc:
         raise HTTPException(404, "Exercise not found")
@@ -725,14 +727,14 @@ async def save_open_answer(req: OpenAnswerRequest):
 
 
 @api_router.get("/open-answers/{session_id}")
-async def list_open_answers(session_id: str):
+async def list_open_answers(session_id: str) -> List[dict]:
     docs = await db.open_answers.find({"session_id": session_id}, {"_id": 0}).to_list(500)
     docs.sort(key=lambda d: d.get("updated_at", ""), reverse=True)
     return docs
 
 
 @api_router.get("/open-answers/{session_id}/exercise/{exercise_id}")
-async def get_open_answer(session_id: str, exercise_id: str):
+async def get_open_answer(session_id: str, exercise_id: str) -> dict:
     doc = await db.open_answers.find_one(
         {"session_id": session_id, "exercise_id": exercise_id}, {"_id": 0}
     )
@@ -740,7 +742,7 @@ async def get_open_answer(session_id: str, exercise_id: str):
 
 
 @api_router.get("/revision/questions")
-async def revision_questions(session_id: str, limit: int = 10):
+async def revision_questions(session_id: str, limit: int = 10) -> List[Exercise]:
     """Returns questions the user got wrong (for revision mode)."""
     wrong = await db.progress.find(
         {"session_id": session_id, "correct": False}, {"_id": 0}

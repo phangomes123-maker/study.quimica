@@ -1,0 +1,20 @@
+{
+  "summary": "Backend regression test post code-quality refactor (return type hints + summary_text init). All 6 targeted endpoints working with no regressions.",
+  "tested_scope": ["backend"],
+  "passed": [
+    "GET /api/ returns {message, status:'ok'} (200)",
+    "GET /api/topics returns 10 topics (200)",
+    "GET /api/topics/{id}/exercises returns mixed mcq+open (200)",
+    "POST /api/exercises/answer correct pick -> {correct:true, correct_index, explanation} (200)",
+    "POST /api/exercises/answer wrong pick -> {correct:false, correct_index, explanation} (200)",
+    "GET /api/progress/{sid} returns {total, correct, accuracy, per_topic} (200)",
+    "POST /api/open-answers upserts valid open exercise -> {saved:true, updated:false} (200); returns 404 for invalid exercise_id (expected)",
+    "GET /api/open-answers/{sid} returns array (200)",
+    "POST /api/topics/{id}/summary/generate returns Claude-generated markdown summary (200)"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "100%", "frontend": "not tested (out of scope)"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}

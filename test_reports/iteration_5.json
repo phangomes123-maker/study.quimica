@@ -1,0 +1,15 @@
+{
+  "summary": "Backend regression test after pure refactor of tutor_chat and scanner_analyze (extracted helpers _build_tutor_context, _extract_json_block, _enrich_with_topics, _call_scanner_llm). All three critical endpoints work identically to iteration 4. Tutor kept Socratic behavior (guiding question, no direct answer). Scanner returned all 5 expected keys with enriched suggested_topics (id/slug/title/module). No frontend testing performed per request.",
+  "tested_scope": ["backend"],
+  "passed": [
+    "GET /api/topics -> HTTP 200, 13 topics across 4 modules (Termoquímica, Eletroquímica, Cinética Química, Equilíbrio Químico)",
+    "POST /api/tutor/chat with 'não entendi entalpia' -> HTTP 200; reply contains guiding question ('...você já ouviu falar em energia das substâncias? O que você acha que acontece...'), no direct definition-only answer",
+    "POST /api/scanner/analyze with CH4+2O2 image -> HTTP 200; returns assunto='Termoquímica', resumo_questao, topic_slugs=['termoquimica-entalpia'], dica (Socratic), suggested_topics enriched with id/slug/title/module",
+    "POST /api/topics/{id}/summary/generate -> HTTP 200 with content payload (untouched endpoint still works)"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "100%", "frontend": "not tested (per request)"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}

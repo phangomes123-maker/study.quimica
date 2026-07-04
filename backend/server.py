@@ -904,22 +904,28 @@ TUTOR_SYSTEM = (
 )
 
 
-@api_router.post("/tutor/chat")
-async def tutor_chat(req: TutorChatRequest) -> dict:
-    context = ""
-    if req.exercise_id:
-        ex_doc = await db.exercises.find_one({"id": req.exercise_id}, {"_id": 0})
+async def _build_tutor_context(exercise_id: Optional[str], topic_id: Optional[str]) -> str:
+    parts: List[str] = []
+    if exercise_id:
+        ex_doc = await db.exercises.find_one({"id": exercise_id}, {"_id": 0})
         if ex_doc:
             ex = Exercise(**ex_doc)
-            context = f"\n\nContexto da questão que o aluno está tentando resolver:\n{ex.question}"
+            block = f"\n\nContexto da questão que o aluno está tentando resolver:\n{ex.question}"
             if ex.options:
-                context += "\nOpções: " + " | ".join(f"{chr(65+i)}) {o}" for i, o in enumerate(ex.options))
-    if req.topic_id:
-        topic_doc = await db.topics.find_one({"id": req.topic_id}, {"_id": 0})
+                block += "\nOpções: " + " | ".join(f"{chr(65+i)}) {o}" for i, o in enumerate(ex.options))
+            parts.append(block)
+    if topic_id:
+        topic_doc = await db.topics.find_one({"id": topic_id}, {"_id": 0})
         if topic_doc:
-            context += f"\n\nTópico atual: {topic_doc['title']} ({topic_doc['module']})"
+            parts.append(f"\n\nTópico atual: {topic_doc['title']} ({topic_doc['module']})")
+    return "".join(parts)
 
+
+@api_router.post("/tutor/chat")
+async def tutor_chat(req: TutorChatRequest) -> dict:
+    context = await _build_tutor_context(req.exercise_id, req.topic_id)
     system = TUTOR_SYSTEM + context
+    reply: str = ""
     try:
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
@@ -940,6 +946,52 @@ async def tutor_chat(req: TutorChatRequest) -> dict:
     return {"reply": reply}
 
 
+def _extract_json_block(text: str) -> dict:
+    import re
+    import json as _json
+    m = re.search(r"\{.*\}", text, re.DOTALL)
+    if not m:
+        return {"raw": text}
+    try:
+        return _json.loads(m.group(0))
+    except Exception:
+        return {"raw": text}
+
+
+def _enrich_with_topics(parsed: dict, topics: List[dict]) -> dict:
+    slug_to_topic = {t["slug"]: t for t in topics}
+    suggested = []
+    for s in parsed.get("topic_slugs", []):
+        t = slug_to_topic.get(s)
+        if t:
+            suggested.append({"id": t["id"], "slug": t["slug"], "title": t["title"], "module": t["module"]})
+    parsed["suggested_topics"] = suggested
+    return parsed
+
+
+async def _call_scanner_llm(image_b64: str, topic_list: str) -> str:
+    system = (
+        "Você é um assistente de Química que analisa fotos de exercícios enviadas pelo aluno. "
+        "Sua tarefa: identificar o(s) tópico(s) do exercício e sugerir estudos. "
+        "Responda EXCLUSIVAMENTE em JSON válido no formato: "
+        '{"assunto": "nome do assunto", "resumo_questao": "1 frase", '
+        '"topic_slugs": ["slug1", "slug2"], "dica": "1 pista socrática, sem dar resposta"} '
+        "Escolha até 3 slugs desta lista:\n" + topic_list
+    )
+    chat = LlmChat(
+        api_key=EMERGENT_LLM_KEY,
+        session_id=f"scanner-{uuid.uuid4()}",
+        system_message=system,
+    ).with_model("anthropic", "claude-sonnet-4-5-20250929")
+    img = ImageContent(image_base64=image_b64)
+    user = UserMessage(
+        text="Analise esta foto de exercício de química e retorne o JSON.",
+        file_contents=[img],
+    )
+    response = await chat.send_message(user)
+    return response if isinstance(response, str) else str(response)
+
+
 @api_router.post("/scanner/analyze")
 async def scanner_analyze(req: ScannerRequest) -> dict:
     b64 = req.image_base64
@@ -949,54 +1001,15 @@ async def scanner_analyze(req: ScannerRequest) -> dict:
     topics = await db.topics.find({}, {"_id": 0}).to_list(200)
     topic_list = "\n".join(f"- {t['slug']}: {t['title']} ({t['module']})" for t in topics)
 
-    system = (
-        "Você é um assistente de Química que analisa fotos de exercícios enviadas pelo aluno. "
-        "Sua tarefa: identificar o(s) tópico(s) do exercício e sugerir estudos. "
-        "Responda EXCLUSIVAMENTE em JSON válido no formato: "
-        '{"assunto": "nome do assunto", "resumo_questao": "1 frase", '
-        '"topic_slugs": ["slug1", "slug2"], "dica": "1 pista socrática, sem dar resposta"} '
-        "Escolha até 3 slugs desta lista:\n" + topic_list
-    )
-
+    raw: str = ""
     try:
-        chat = LlmChat(
-            api_key=EMERGENT_LLM_KEY,
-            session_id=f"scanner-{uuid.uuid4()}",
-            system_message=system,
-        ).with_model("anthropic", "claude-sonnet-4-5-20250929")
-
-        img = ImageContent(image_base64=b64)
-        user = UserMessage(
-            text="Analise esta foto de exercício de química e retorne o JSON.",
-            file_contents=[img],
-        )
-        response = await chat.send_message(user)
-        raw = response if isinstance(response, str) else str(response)
+        raw = await _call_scanner_llm(b64, topic_list)
     except Exception as e:
         logger.exception("Scanner failed")
         raise HTTPException(500, f"Falha no scanner: {str(e)}")
 
-    # Parse JSON out of response
-    import re, json as _json
-    m = re.search(r"\{.*\}", raw, re.DOTALL)
-    parsed = {}
-    if m:
-        try:
-            parsed = _json.loads(m.group(0))
-        except Exception:
-            parsed = {"raw": raw}
-    else:
-        parsed = {"raw": raw}
-
-    # Enrich with topic IDs
-    slug_to_topic = {t["slug"]: t for t in topics}
-    suggested = []
-    for s in parsed.get("topic_slugs", []):
-        t = slug_to_topic.get(s)
-        if t:
-            suggested.append({"id": t["id"], "slug": t["slug"], "title": t["title"], "module": t["module"]})
-    parsed["suggested_topics"] = suggested
-    return parsed
+    parsed = _extract_json_block(raw)
+    return _enrich_with_topics(parsed, topics)
 
 
 app.include_router(api_router)

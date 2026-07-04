@@ -1,0 +1,80 @@
+{
+  "theme": "light",
+  "archetype": "Swiss & High-Contrast (Archetype 4)",
+  "aesthetic_description": "Lab Minimalist / Swiss Poster. The design mimics a high-end scientific journal or modern lab notebook. Stark white and newsprint grey backgrounds are heavily contrasted by deepest ink black text. We use sharp, bright accents (Catalyst Blue, Acid Yellow, Litmus Red) strictly as functional indicators for progress, active states, and errors. UI elements are crisp with 1px borders, avoiding soft shadows. Typography is a mix of striking Grotesk for headers and technical Mono/Sans for data.",
+  "colors": {
+    "background_primary": "#FFFFFF",
+    "background_secondary": "#F4F5F2",
+    "text_primary": "#0F1115",
+    "text_secondary": "#5C5F66",
+    "accent_primary": "#0022FF",
+    "accent_secondary": "#FF3300",
+    "accent_tertiary": "#FFD500",
+    "border_color": "#E0E2DB",
+    "success": "#00D65B",
+    "error": "#FF3300",
+    "warning": "#FFD500",
+    "surface_glass": "bg-white/80 backdrop-blur-xl border border-white/40"
+  },
+  "typography": {
+    "fonts": {
+      "heading": "Cabinet Grotesk, sans-serif",
+      "body": "IBM Plex Sans, sans-serif",
+      "mono": "IBM Plex Mono, monospace"
+    },
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-black tracking-tighter leading-none text-[#0F1115]",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#0F1115]",
+      "h3": "text-xl sm:text-2xl font-semibold tracking-tight text-[#0F1115]",
+      "body": "text-base leading-relaxed text-[#0F1115] font-normal",
+      "small": "text-sm text-[#5C5F66]",
+      "overline": "text-xs font-mono uppercase tracking-[0.2em] text-[#5C5F66]"
+    }
+  },
+  "layout": {
+    "spacing_system": "Generous spacing. Use p-6, p-8, p-12 for containers. Containers with borders MUST have internal padding.",
+    "grid_strategy": "MODE B: THE CONTROL ROOM GRID. For the study dashboard: grid-cols-1 md:grid-cols-3 lg:grid-cols-4 with gap-6. Use col-span-3 for main content (videos/exercises) and col-span-1 for sidebar (progress, syllabus).",
+    "border_radius": "Sharp or minimal. rounded-none or rounded-sm (2px max) for a rigid, academic feel."
+  },
+  "components": {
+    "button": "Flat solid background. text-white bg-[#0022FF] hover:bg-[#0019C0] hover:text-white transition-colors duration-200. No soft shadows. Use 1px border if secondary: border border-[#0F1115] text-[#0F1115] hover:bg-[#0F1115] hover:text-white.",
+    "card": "Flat background (bg-white), 1px solid border (border-[#E0E2DB]), no shadow by default. On hover: shadow-[4px_4px_0px_0px_rgba(15,17,21,1)] and -translate-y-1 transition-all duration-200.",
+    "input": "bg-transparent border-b-2 border-[#E0E2DB] focus:border-[#0022FF] outline-none px-0 py-2 rounded-none. No default box styling, just a strict line like a fill-in-the-blank form.",
+    "tabs": "Use Shadcn tabs but strip the rounded background. Use a bottom border indicator for active state to feel like a folder or binder.",
+    "video_embed": "Aspect video container. 1px black border. If a placeholder, use an abstract scientific image with a play button overlay.",
+    "progress_bar": "Use a sharp rectangular progress bar. bg-[#F4F5F2] with fill color in Acid Yellow (#FFD500) or Catalyst Blue (#0022FF)."
+  },
+  "images": [
+    {
+      "category": "hero_background",
+      "url": "https://images.pexels.com/photos/9243559/pexels-photo-9243559.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Detailed view of lab glassware with tubes and clamps in a laboratory setting. Use with a white/grey gradient overlay (bg-white/80) so text remains highly readable."
+    },
+    {
+      "category": "study_placeholder",
+      "url": "https://images.pexels.com/photos/7695209/pexels-photo-7695209.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Focused teenager girl studying with a tablet at home. Use for onboarding or empty states."
+    }
+  ],
+  "motion": {
+    "hover_states": "Crisp and sudden. Use transform translation (-translate-y-1) and hard shadows (shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]) on hover for interactive cards.",
+    "page_transitions": "Staggered fade up for grid items using Framer Motion (opacity 0 to 1, y: 10 to 0).",
+    "accessibility": "Respect prefers-reduced-motion."
+  },
+  "specific_features": {
+    "chemistry_topics": "Kinetics (Cinética) and Electrochemistry (Eletroquímica). Use specific icons (Phosphor icons: Flask, Lightning, Atom) to represent these topics.",
+    "ai_summary": "Visually distinct block. Use background #F4F5F2, with a Monospace overline '>> RESUMO GERADO POR IA'. Add a subtle glowing left border (border-l-4 border-[#0022FF]).",
+    "exercise_system": "Multiple choice questions should appear as selectable rows. On select, bg turns to light blue (bg-blue-50). On correct, bg turns #00D65B text-white. On incorrect, bg turns #FF3300 text-white. Include data-testid='mcq-option'.",
+    "revision_mode": "Toggle switch to enter 'Revisão'. When active, the app's secondary background could shift to a pale yellow tint to indicate 'Focus/Review' state.",
+    "testing_attributes": "All buttons, inputs, tabs, and multiple choice options MUST have a data-testid attribute (e.g., data-testid='submit-answer-btn')."
+  },
+  "instructions_to_main_agent": [
+    "Install and use @phosphor-icons/react for all iconography.",
+    "Use Cabinet Grotesk for headings and IBM Plex Sans for body. Add these via Google Fonts or standard imports in index.html/CSS.",
+    "Strictly follow the color palette. No purple/violet gradients. No Inter font.",
+    "Implement the 'Control Room' grid layout for the main study dashboard. The video/content takes the main area, while syllabus/progress sits in a rigid sidebar.",
+    "Ensure the UI looks like a clean, modern lab notebook - heavily relying on borders, grids, and high contrast rather than shadows and rounded corners.",
+    "All interactive elements must include data-testid.",
+    "Language must be Portuguese (pt-BR)."
+  ]
+}

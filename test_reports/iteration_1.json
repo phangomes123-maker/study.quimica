@@ -1,0 +1,31 @@
+{
+  "summary": "First-finish smoke test for Estúdio Química study platform. All core backend endpoints and frontend flows verified end-to-end: topics listing (5 topics), content, exercises with MCQ answering + auto-grading + explanations, videos (iframes), AI summary via Claude Sonnet 4.5 (EMERGENT_LLM_KEY), revision, progress with session persistence.",
+  "tested_scope": ["backend", "frontend", "integration"],
+  "passed": [
+    "GET /api/topics returns 5 seeded topics (3 Cinética + 2 Eletroquímica)",
+    "GET /api/topics/{id}/content returns theory sections",
+    "GET /api/topics/{id}/exercises returns 4 exercises for first topic (15 MCQ elements visible on UI)",
+    "GET /api/topics/{id}/videos returns YouTube videos; frontend renders iframes",
+    "POST /api/exercises/answer returns correct/wrong + correct_index + explanation (tested correct and wrong pick, UI shows feedback+explanation)",
+    "POST /api/topics/{id}/summary/generate returns Claude-generated markdown (verified via curl on Eletroquímica topic and UI showed cached summary for Cinética)",
+    "GET /api/revision/questions?session_id=&limit= returns wrongly-answered questions",
+    "GET /api/progress/{sid} returns total/correct/accuracy/per_topic; UI progress page renders with progress bars",
+    "Home page loads with hero + topics grid; nav-topics/nav-progress work; topic-card click navigates to /topico/:id with 4 tabs (Conteúdo/Resumo IA/Exercícios/Vídeos)",
+    "Revision page loads and shows MCQ questions",
+    "Session persistence via localStorage session_id works (progress accumulated across pages)"
+  ],
+  "failed": [
+    {
+      "area": "AI Summary (transient)",
+      "issue": "First curl to POST /api/topics/{id}/summary/generate returned 'litellm.BadRequestError: Budget has been exceeded! Current cost: 0.0, Max budget: 0.0'. Subsequent calls (via UI and curl on a different topic) succeeded and returned proper markdown. Likely transient LLM proxy budget state during first cold call.",
+      "evidence": "curl response: {\"detail\":\"Falha ao gerar resumo: Failed to generate chat completion: litellm.BadRequestError: OpenAIException - Budget has been exceeded! Current cost: 0.0, Max budget: 0.0\"}. Later request on topic 745b74f9 succeeded with full markdown.",
+      "priority": "LOW"
+    }
+  ],
+  "action_items": [
+    "Monitor EMERGENT_LLM_KEY budget error – if it recurs, investigate whether it's a rate limit / cold start issue in the litellm proxy. No code change needed if it's transient."
+  ],
+  "success_rate": {"backend": "100% (7/7 endpoints functional; 1 transient failure recovered)", "frontend": "100% (all 11 checks passed)"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}

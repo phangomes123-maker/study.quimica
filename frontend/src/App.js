@@ -8,6 +8,8 @@ import Topics from "./pages/Topics";
 import TopicDetail from "./pages/TopicDetail";
 import Revision from "./pages/Revision";
 import Progress from "./pages/Progress";
+import Scanner from "./pages/Scanner";
+import TutorChat from "./components/TutorChat";
 
 function App() {
   return (
@@ -21,9 +23,11 @@ function App() {
             <Route path="/topico/:id" element={<TopicDetail />} />
             <Route path="/revisao" element={<Revision />} />
             <Route path="/progresso" element={<Progress />} />
+            <Route path="/scanner" element={<Scanner />} />
           </Routes>
         </main>
         <Footer />
+        <TutorChat />
         <Toaster position="top-right" />
       </BrowserRouter>
     </div>

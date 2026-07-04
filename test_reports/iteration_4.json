@@ -1,0 +1,22 @@
+{
+  "summary": "Tested new AI features (Tutor Socratic chat + Scanner) end-to-end. Backend endpoints /api/tutor/chat and /api/scanner/analyze both work correctly. Tutor keeps Socratic behavior (refused to give direct answer to '2+2' and 'pH of water'). Scanner correctly identified Termoquímica for CH4+2O2 image and returned 2 enriched suggested_topics. Frontend: FAB, panel, input Enter, send button, /scanner upload+preview+analyze+suggestion cards all functional. No regression on /topicos (4 modules visible incl. Termoquímica).",
+  "tested_scope": ["frontend", "backend", "integration"],
+  "passed": [
+    "POST /api/tutor/chat returns Socratic reply (no direct answer)",
+    "POST /api/scanner/analyze returns assunto=Termoquímica + topic_slugs + suggested_topics with id/slug/title/module",
+    "GET /api/topics returns 13 topics across 4 modules",
+    "data-testid tutor-fab visible on Home; opens tutor-panel on click",
+    "tutor-input send via Enter key produces assistant reply",
+    "tutor-send button produces assistant reply",
+    "nav-scanner link present; /scanner route loads scanner-page",
+    "scanner-input file upload triggers preview and shows scanner-analyze button",
+    "scanner-analyze calls API and renders scanner-result with assunto, dica, and clickable suggestion cards",
+    "scanner-suggestion-termoquimica-entalpia card rendered",
+    "/topicos shows all 4 module filters (Termoquímica, Eletroquímica, Cinética, Equilíbrio)"
+  ],
+  "failed": [],
+  "action_items": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "retest_needed": false,
+  "full_testing_deferred": true
+}

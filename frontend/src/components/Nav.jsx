@@ -41,6 +41,7 @@ export default function Nav() {
           {link("/topicos", "Tópicos", "nav-topics")}
           {link("/revisao", "Revisão", "nav-revision")}
           {link("/progresso", "Progresso", "nav-progress")}
+          {link("/scanner", "Scanner IA", "nav-scanner")}
         </nav>
 
         <div className="flex items-center gap-2">

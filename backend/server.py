@@ -10,7 +10,7 @@ from typing import List, Optional, Literal
 import uuid
 from datetime import datetime, timezone
 
-from emergentintegrations.llm.chat import LlmChat, UserMessage
+from emergentintegrations.llm.chat import LlmChat, UserMessage, ImageContent
 
 
 ROOT_DIR = Path(__file__).parent
@@ -107,6 +107,24 @@ class OpenAnswerRequest(BaseModel):
     session_id: str
     exercise_id: str
     answer_text: str
+
+
+class TutorMessage(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str
+
+
+class TutorChatRequest(BaseModel):
+    session_id: str
+    exercise_id: Optional[str] = None
+    topic_id: Optional[str] = None
+    user_message: str
+    history: List[TutorMessage] = []
+
+
+class ScannerRequest(BaseModel):
+    image_base64: str  # data URL or plain base64
+    mime_type: str = "image/jpeg"
 
 
 # ============ SEED DATA ============
@@ -874,6 +892,111 @@ async def revision_questions(session_id: str, limit: int = 10) -> List[Exercise]
     else:
         exs = await db.exercises.find({"id": {"$in": ex_ids}}, {"_id": 0}).to_list(limit)
     return [Exercise(**e) for e in exs]
+
+
+TUTOR_SYSTEM = (
+    "Você é um professor de Química brasileiro no papel de tutor SOCRÁTICO. "
+    "REGRA CRÍTICA: NUNCA dê a resposta final ao aluno. Em vez disso, faça perguntas "
+    "curtas e direcionadas que o ajudem a descobrir sozinho. Ofereça pistas mínimas, "
+    "sugestões de fórmula ou conceito, e valide o raciocínio dele passo a passo. "
+    "Se o aluno pedir 'me dá a resposta', gentilmente redirecione com uma pergunta guia. "
+    "Responda em português (pt-BR), tom encorajador, sem emojis. Máximo 4-5 linhas por resposta."
+)
+
+
+@api_router.post("/tutor/chat")
+async def tutor_chat(req: TutorChatRequest) -> dict:
+    context = ""
+    if req.exercise_id:
+        ex_doc = await db.exercises.find_one({"id": req.exercise_id}, {"_id": 0})
+        if ex_doc:
+            ex = Exercise(**ex_doc)
+            context = f"\n\nContexto da questão que o aluno está tentando resolver:\n{ex.question}"
+            if ex.options:
+                context += "\nOpções: " + " | ".join(f"{chr(65+i)}) {o}" for i, o in enumerate(ex.options))
+    if req.topic_id:
+        topic_doc = await db.topics.find_one({"id": req.topic_id}, {"_id": 0})
+        if topic_doc:
+            context += f"\n\nTópico atual: {topic_doc['title']} ({topic_doc['module']})"
+
+    system = TUTOR_SYSTEM + context
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"tutor-{req.session_id}-{req.exercise_id or 'global'}",
+            system_message=system,
+        ).with_model("anthropic", "claude-sonnet-4-5-20250929")
+
+        # Replay short history so Claude has continuity
+        for m in req.history[-6:]:
+            if m.role == "user":
+                await chat.send_message(UserMessage(text=m.content))
+
+        response = await chat.send_message(UserMessage(text=req.user_message))
+        reply = response if isinstance(response, str) else str(response)
+    except Exception as e:
+        logger.exception("Tutor chat failed")
+        raise HTTPException(500, f"Falha no tutor: {str(e)}")
+    return {"reply": reply}
+
+
+@api_router.post("/scanner/analyze")
+async def scanner_analyze(req: ScannerRequest) -> dict:
+    b64 = req.image_base64
+    if b64.startswith("data:"):
+        b64 = b64.split(",", 1)[1]
+
+    topics = await db.topics.find({}, {"_id": 0}).to_list(200)
+    topic_list = "\n".join(f"- {t['slug']}: {t['title']} ({t['module']})" for t in topics)
+
+    system = (
+        "Você é um assistente de Química que analisa fotos de exercícios enviadas pelo aluno. "
+        "Sua tarefa: identificar o(s) tópico(s) do exercício e sugerir estudos. "
+        "Responda EXCLUSIVAMENTE em JSON válido no formato: "
+        '{"assunto": "nome do assunto", "resumo_questao": "1 frase", '
+        '"topic_slugs": ["slug1", "slug2"], "dica": "1 pista socrática, sem dar resposta"} '
+        "Escolha até 3 slugs desta lista:\n" + topic_list
+    )
+
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"scanner-{uuid.uuid4()}",
+            system_message=system,
+        ).with_model("anthropic", "claude-sonnet-4-5-20250929")
+
+        img = ImageContent(image_base64=b64)
+        user = UserMessage(
+            text="Analise esta foto de exercício de química e retorne o JSON.",
+            file_contents=[img],
+        )
+        response = await chat.send_message(user)
+        raw = response if isinstance(response, str) else str(response)
+    except Exception as e:
+        logger.exception("Scanner failed")
+        raise HTTPException(500, f"Falha no scanner: {str(e)}")
+
+    # Parse JSON out of response
+    import re, json as _json
+    m = re.search(r"\{.*\}", raw, re.DOTALL)
+    parsed = {}
+    if m:
+        try:
+            parsed = _json.loads(m.group(0))
+        except Exception:
+            parsed = {"raw": raw}
+    else:
+        parsed = {"raw": raw}
+
+    # Enrich with topic IDs
+    slug_to_topic = {t["slug"]: t for t in topics}
+    suggested = []
+    for s in parsed.get("topic_slugs", []):
+        t = slug_to_topic.get(s)
+        if t:
+            suggested.append({"id": t["id"], "slug": t["slug"], "title": t["title"], "module": t["module"]})
+    parsed["suggested_topics"] = suggested
+    return parsed
 
 
 app.include_router(api_router)

@@ -1,0 +1,20 @@
+{
+  "summary": "Iteration 7: validated the 3 new UX improvements — (1) AI grading for open questions via POST /api/open-answers/grade, (2) streak widget on Home hero + Progress page, (3) reorganized Home grouped by module with colored module icons, plus badges/achievements grid on Progress. Backend pytest suite (9 tests, 100% pass) covers the new /grade endpoint (structured JSON {nota, acertos, faltou, proximos_passos} with nota 0-10, plus 404 for unknown exercise_id) and prior features (topics, exercises, progress, mcq answer, save open-answer, revision). Frontend Playwright E2E: Home renders 4 home-module-<mod> sections (Cinética Química, Eletroquímica, Equilíbrio Químico, Termoquímica) with colored icon tiles and descriptions; hero shows streak card; Progress page renders streak-widget (gradient red→yellow, 0 dias / recorde 0) and badges-grid with 10 badges (6 fixed + 4 mestre-em-<módulo>), locked badges dashed/opacity. In TopicDetail → tab-exercises → OpenCard, textarea + '✨ Corrigir com IA' button work end-to-end: click triggers /open-answers/grade, response renders inside data-testid=grade-result-<id> with big NOTA/10, green ACERTOS block, red FALTOU block, blue PRÓXIMOS PASSOS block. All prior features intact (video cards, MCQ, save open answer, revision).",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "streak.js: date key uses raw month/day without zero-padding (e.g. '2026-1-7' vs '2026-01-07'). Not a bug but non-standard; consistent internally so works.",
+    "TopicDetail.jsx is 506 lines — approaching threshold for splitting (OpenCard/MCQCard could become their own files).",
+    "Badges Mestre-em-<módulo> id uses raw module string containing spaces & accents ('badge-master-Cinética Química'). Works as data-testid attribute but non-conventional; consider slugifying."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py"],
+  "success_rate": {"backend": "100% (9/9)", "frontend": "100% (all critical flows)"},
+  "test_credentials": "No auth in this app — session_id based (localStorage).",
+  "seed_data_creation": "None; used existing seeded topics/exercises.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend regression suite lives at /app/backend/tests/backend_test.py (pytest). New grading endpoint at POST /api/open-answers/grade requires exercise_id (must exist) + answer_text; returns {nota, acertos, faltou, proximos_passos}. Frontend testids: home-modules, home-module-<mod>, streak-widget, badges-grid, badge-<id>, grade-open-<exId>, grade-result-<exId>, open-textarea-<exId>. Tab id is 'exercises' (not 'exercicios').",
+  "rca of the issue": "N/A — no bugs found."
+}

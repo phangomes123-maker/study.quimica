@@ -23,5 +23,7 @@ export const saveOpenAnswer = (payload) => api.post(`/open-answers`, payload).th
 export const fetchOpenAnswers = (sid) => api.get(`/open-answers/${sid}`).then((r) => r.data);
 export const fetchOpenAnswer = (sid, exId) =>
   api.get(`/open-answers/${sid}/exercise/${exId}`).then((r) => r.data);
+export const gradeOpenAnswer = (payload) =>
+  api.post(`/open-answers/grade`, payload).then((r) => r.data);
 export const tutorChat = (payload) => api.post(`/tutor/chat`, payload).then((r) => r.data);
 export const scannerAnalyze = (payload) => api.post(`/scanner/analyze`, payload).then((r) => r.data);

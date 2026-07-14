@@ -127,6 +127,11 @@ class ScannerRequest(BaseModel):
     mime_type: str = "image/jpeg"
 
 
+class OpenGradeRequest(BaseModel):
+    exercise_id: str
+    answer_text: str
+
+
 # ============ SEED DATA ============
 SEED_TOPICS = [
     {
@@ -892,6 +897,42 @@ async def revision_questions(session_id: str, limit: int = 10) -> List[Exercise]
     else:
         exs = await db.exercises.find({"id": {"$in": ex_ids}}, {"_id": 0}).to_list(limit)
     return [Exercise(**e) for e in exs]
+
+
+@api_router.post("/open-answers/grade")
+async def grade_open_answer(req: OpenGradeRequest) -> dict:
+    ex_doc = await db.exercises.find_one({"id": req.exercise_id}, {"_id": 0})
+    if not ex_doc:
+        raise HTTPException(404, "Exercise not found")
+    ex = Exercise(**ex_doc)
+
+    system = (
+        "Você é um professor de Química corretor. Compare a resposta do aluno com o gabarito, "
+        "dê feedback construtivo em português (pt-BR). Responda EXCLUSIVAMENTE em JSON: "
+        '{"nota": <0-10>, "acertos": "o que o aluno acertou", "faltou": "o que faltou/errou", '
+        '"proximos_passos": "1 dica curta para melhorar"}. Seja gentil e específico.'
+    )
+    prompt = (
+        f"QUESTÃO:\n{ex.question}\n\n"
+        f"GABARITO OFICIAL:\n{ex.explanation}\n\n"
+        f"RESPOSTA DO ALUNO:\n{req.answer_text}\n\n"
+        "Avalie e retorne o JSON."
+    )
+
+    reply: str = ""
+    try:
+        chat = LlmChat(
+            api_key=EMERGENT_LLM_KEY,
+            session_id=f"grade-{req.exercise_id}",
+            system_message=system,
+        ).with_model("anthropic", "claude-sonnet-4-5-20250929")
+        response = await chat.send_message(UserMessage(text=prompt))
+        reply = response if isinstance(response, str) else str(response)
+    except Exception as e:
+        logger.exception("Grade failed")
+        raise HTTPException(500, f"Falha na correção: {str(e)}")
+
+    return _extract_json_block(reply)
 
 
 TUTOR_SYSTEM = (

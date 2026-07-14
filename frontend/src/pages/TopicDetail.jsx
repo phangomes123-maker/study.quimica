@@ -12,8 +12,10 @@ import {
   submitAnswer,
   saveOpenAnswer,
   fetchOpenAnswer,
+  gradeOpenAnswer,
 } from "../lib/api";
 import { getSessionId } from "../lib/session";
+import { pingStreak } from "../lib/streak";
 
 const TABS = [
   { id: "content", label: "Conteúdo", icon: BookOpen },
@@ -246,6 +248,7 @@ function MCQCard({ exercise, index }) {
         selected_index: selected,
       });
       setResult(res);
+      pingStreak();
     } catch {
       toast.error("Erro ao enviar resposta");
     } finally {
@@ -317,6 +320,8 @@ function OpenCard({ exercise, index }) {
   const [showAnswer, setShowAnswer] = useState(false);
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [grade, setGrade] = useState(null);
+  const [grading, setGrading] = useState(false);
 
   useEffect(() => {
     fetchOpenAnswer(getSessionId(), exercise.id).then((d) => {
@@ -337,11 +342,26 @@ function OpenCard({ exercise, index }) {
         answer_text: answer,
       });
       setSaved(true);
+      pingStreak();
       toast.success("Resposta salva");
     } catch {
       toast.error("Erro ao salvar");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleGrade = async () => {
+    if (!answer.trim()) return;
+    setGrading(true);
+    try {
+      const g = await gradeOpenAnswer({ exercise_id: exercise.id, answer_text: answer });
+      setGrade(g);
+      pingStreak();
+    } catch {
+      toast.error("Erro ao corrigir");
+    } finally {
+      setGrading(false);
     }
   };
 
@@ -355,12 +375,20 @@ function OpenCard({ exercise, index }) {
       <textarea
         rows={4}
         value={answer}
-        onChange={(e) => { setAnswer(e.target.value); setSaved(false); }}
+        onChange={(e) => { setAnswer(e.target.value); setSaved(false); setGrade(null); }}
         placeholder="Escreva sua resposta aqui..."
         data-testid={`open-textarea-${exercise.id}`}
         className="w-full border-b-2 border-[#E0E2DB] focus:border-[#0022FF] outline-none py-2 bg-transparent resize-none text-sm"
       />
       <div className="mt-4 flex flex-wrap gap-2">
+        <button
+          onClick={handleGrade}
+          disabled={grading || !answer.trim()}
+          data-testid={`grade-open-${exercise.id}`}
+          className="font-mono text-xs uppercase tracking-[0.2em] bg-[#FFD500] text-[#0F1115] px-4 py-2 hover:bg-yellow-400 disabled:opacity-40 transition-colors"
+        >
+          {grading ? "Corrigindo..." : "✨ Corrigir com IA"}
+        </button>
         <button
           onClick={handleSave}
           disabled={saving || !answer.trim()}
@@ -377,6 +405,19 @@ function OpenCard({ exercise, index }) {
           {showAnswer ? "Ocultar gabarito" : "Ver gabarito"}
         </button>
       </div>
+
+      {grade && (
+        <div className="mt-4 border border-[#FFD500] bg-[#FFFBEC] p-4" data-testid={`grade-result-${exercise.id}`}>
+          <div className="flex items-baseline justify-between mb-3">
+            <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66]">Correção IA</span>
+            <span className="font-heading text-3xl">{grade.nota ?? "?"}<span className="text-lg text-[#5C5F66]">/10</span></span>
+          </div>
+          {grade.acertos && (<div className="mb-2"><div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#00D65B]">Acertos</div><p className="text-sm">{grade.acertos}</p></div>)}
+          {grade.faltou && (<div className="mb-2"><div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#FF3300]">Faltou</div><p className="text-sm">{grade.faltou}</p></div>)}
+          {grade.proximos_passos && (<div><div className="font-mono text-[10px] uppercase tracking-[0.2em] text-[#0022FF]">Próximos passos</div><p className="text-sm">{grade.proximos_passos}</p></div>)}
+        </div>
+      )}
+
       {showAnswer && (
         <div className="mt-4 border-l-4 border-[#0022FF] pl-4 py-2 bg-[#F4F5F2]" data-testid={`open-explanation-${exercise.id}`}>
           <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-[#5C5F66] mb-1">

@@ -661,7 +661,9 @@ SEED_EXERCISES = {
 
 
 async def seed_database() -> None:
-    """Seed the database idempotently by slug. Adds new topics without touching existing ones."""
+    """Seed the database idempotently by slug. Adds new topics without touching existing ones.
+    Also upgrades exercise explanations by matching question text (so improved gabaritos overwrite old ones).
+    """
     topic_id_by_slug = {}
     existing = await db.topics.find({}, {"_id": 0}).to_list(500)
     for d in existing:
@@ -676,7 +678,6 @@ async def seed_database() -> None:
         topic_id_by_slug[t["slug"]] = topic.id
         added += 1
 
-        # seed children for this new topic
         for i, c in enumerate(SEED_CONTENT.get(t["slug"], [])):
             content = Content(topic_id=topic.id, order=i, **c)
             await db.contents.insert_one(content.model_dump())
@@ -689,8 +690,24 @@ async def seed_database() -> None:
             ex = Exercise(topic_id=topic.id, **e)
             await db.exercises.insert_one(ex.model_dump())
 
+    # Upgrade explanations for existing exercises (idempotent, by matching question).
+    upgraded = 0
+    for slug, exs in SEED_EXERCISES.items():
+        tid = topic_id_by_slug.get(slug)
+        if not tid:
+            continue
+        for e in exs:
+            res = await db.exercises.update_one(
+                {"topic_id": tid, "question": e["question"]},
+                {"$set": {"explanation": e["explanation"]}},
+            )
+            if res.modified_count:
+                upgraded += 1
+
     if added:
         logger.info(f"Seeded {added} new topics.")
+    if upgraded:
+        logger.info(f"Upgraded {upgraded} explanations.")
 
 
 # ============ ROUTES ============
